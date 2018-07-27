@@ -239,12 +239,14 @@ public class export_excel {
         sheet.setColumnView(1, 59);
         sheet.setColumnView(2, 17);
         sheet.setColumnView(3, 17);
-        sheet.setColumnView(4, 28);
+        sheet.setColumnView(4, 15);
         sheet.setColumnView(5, 26);
-        sheet.setColumnView(6, 30);
-        sheet.setColumnView(7, 13);
-        sheet.setColumnView(8, 30);
-        sheet.setColumnView(9, 19);
+        sheet.setColumnView(6, 25);
+        sheet.setColumnView(7, 46);
+        sheet.setColumnView(8, 12);
+        sheet.setColumnView(9, 30);
+        sheet.setColumnView(10, 24);
+        sheet.setColumnView(11, 20);
 
     }
 

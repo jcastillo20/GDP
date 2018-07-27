@@ -19,9 +19,10 @@ import java.util.ArrayList;
  *
  * @author JUAN
  */
+// probando
 public class Detalle_PedidoDAO {
 
-    public static ResultSet ConsolidadoxEmpresa(String id) {
+    public static ResultSet ConsolidadoxEmpresa_Riesgos(String id) {
         ResultSet rs = null;
         try {
             String consulta = "select dp.numero_documento as DNI ,CONCAT(dp.apellido_paterno,\" \",dp.apellido_materno,\" \",dp.nombres) as NOMBRES,ifnull(dc.descripcion_larga,'') AS SERVICIO,\n"
@@ -80,7 +81,7 @@ public class Detalle_PedidoDAO {
         return rs;
     }
 
-    public static ResultSet DetalleConsolidado(String id) {
+    public static ResultSet DetalleConsolidado_Riesgos(String id) {
         ResultSet rs = null;
         try {
             String consulta = "SELECT \n"
@@ -123,7 +124,7 @@ public class Detalle_PedidoDAO {
         return rs;
     }
 
-    public static ResultSet Detalle_Usuario_Paquete(String id) {
+    public static ResultSet Detalle_Usuario_Paquete_Riesgos(String id) {
         ResultSet rs = null;
         try {
             String consulta = "SELECT T.USUARIOS,SUM(T.total_consulta) AS 'TOTAL CONSULTAS',SUM(T.positivos) AS POSITIVOS,SUM(T.negativos) AS NEGATIVOS from(\n"
