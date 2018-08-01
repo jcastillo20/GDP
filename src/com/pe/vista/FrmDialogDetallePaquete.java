@@ -87,20 +87,13 @@ public class FrmDialogDetallePaquete extends javax.swing.JDialog {
             ListarDetallePaqueteRiesgos();
             lblNombreEmpresa.setText(Empresa);
             lblServicio.setText(Servicio);
-        } else if(Servicio.matches("(.*)Laboral(.*)")){
-            Mensajes.msjMuestra("Nada");
+        } else if (Servicio.matches("(.*)Laboral(.*)")) {
+            ListarDetallePaqueteLaboral();
+            lblNombreEmpresa.setText(Empresa);
+            lblServicio.setText(Servicio);
+        }else{
+            Mensajes.msjMuestra("Servicio no validado");
         }
-
-    }
-
-    public void RecibeDatosSinPaquete(String id, String empresa, String desde, String hasta) {
-        Empresa = empresa;
-        idEmpresa = id;
-        Desde = desde;
-        Hasta = hasta;
-        lblNombreEmpresa.setText(Empresa);
-
-        ListarDetalleSinPaquete();
 
     }
 
@@ -110,22 +103,6 @@ public class FrmDialogDetallePaquete extends javax.swing.JDialog {
             FormatoDetallepaqueteRiesgos();
             ListarDetalleConsolidadoRiesgos();
             ListarUsuarioPaqueteRiesgos();
-        } catch (Exception e) {
-        }
-    }
-
-    private void ListarDetalleSinPaquete() {
-        try {
-            System.out.println("paso hasta aqui");
-            System.out.println(idEmpresa + "Paso por ListarDetallePaquete");
-            tblDetalle_pedido.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.ConsolidadoxEmpresa_SinPaquete(idEmpresa, Desde, Hasta)));
-            FormatoDetallepaqueteRiesgos();
-            System.out.println(idEmpresa + "Paso por ListarDetallePaquete");
-            System.out.println(idEmpresa);
-            int cantidad = tblDetalle_pedido.getRowCount();
-            txtTotalReportesSolicitados.setText("" + cantidad);
-            ListarDetalleConsolidadoSinPaquete();
-            ListarUsuarioSinPaquete();
         } catch (Exception e) {
         }
     }
@@ -142,6 +119,160 @@ public class FrmDialogDetallePaquete extends javax.swing.JDialog {
                 Mensajes.msjMuestra("No hay Datos del paquete seleccionado");
             }
 
+        } catch (Exception e) {
+        }
+    }
+
+    private void ListarUsuarioPaqueteRiesgos() {
+        try {
+            tblUsuarios.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.Detalle_Usuario_Paquete_Riesgos(idPaquete)));
+            FormatoUsuarioRiesgos();
+
+        } catch (Exception e) {
+        }
+    }
+
+    private void ListarDetallePaqueteLaboral() {
+        try {
+            tblDetalle_pedido.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.ConsolidadoxEmpresa_Laboral(idPaquete)));
+            FormatoDetallepaqueteLaboral();
+            ListarDetalleConsolidadoLaboral();
+            ListarUsuarioPaqueteLaboral();
+        } catch (Exception e) {
+        }
+    }
+
+    private void ListarDetalleConsolidadoLaboral() {
+        try {
+            tblDetalleConsolidado.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.DetalleConsolidado_Laboral(idPaquete)));
+            FormatoDetalleconsolidadoLaboral();
+            if (tblDetalleConsolidado.getRowCount() > 0) {
+                txtReportesAFavor.setVisible(true);
+                txtTotalReportesSolicitados.setText("" + tblDetalleConsolidado.getValueAt(0, 5));
+                txtReportesAFavor.setText("" + tblDetalleConsolidado.getValueAt(0, 6));
+            } else {
+                Mensajes.msjMuestra("No hay Datos del paquete seleccionado");
+            }
+
+        } catch (Exception e) {
+        }
+    }
+
+    private void ListarUsuarioPaqueteLaboral() {
+        try {
+            tblUsuarios.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.Detalle_Usuario_Paquete_Laboral(idPaquete)));
+            FormatoUsuarioLaboral();
+
+        } catch (Exception e) {
+        }
+    }
+
+    private void FormatoDetallepaqueteRiesgos() {
+        tblDetalle_pedido.getColumnModel().getColumn(0).setPreferredWidth(100);
+        tblDetalle_pedido.getColumnModel().getColumn(1).setPreferredWidth(280);
+        tblDetalle_pedido.getColumnModel().getColumn(2).setPreferredWidth(110);
+        tblDetalle_pedido.getColumnModel().getColumn(3).setPreferredWidth(100);
+        tblDetalle_pedido.getColumnModel().getColumn(4).setPreferredWidth(110);
+        tblDetalle_pedido.getColumnModel().getColumn(5).setPreferredWidth(100);
+        tblDetalle_pedido.getColumnModel().getColumn(6).setPreferredWidth(180);
+        tblDetalle_pedido.getColumnModel().getColumn(7).setPreferredWidth(250);
+        tblDetalle_pedido.getColumnModel().getColumn(8).setPreferredWidth(100);
+        tblDetalle_pedido.getColumnModel().getColumn(9).setPreferredWidth(250);
+        tblDetalle_pedido.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        tblDetalle_pedido.setSelectionBackground(Color.GRAY);
+        tblDetalle_pedido.setIntercellSpacing(new Dimension(1, 1));
+        tblDetalle_pedido.setRowMargin(1);
+        tblDetalle_pedido.setOpaque(false);
+    }
+
+    private void FormatoDetalleconsolidadoRiesgos() {
+        tblDetalleConsolidado.getColumnModel().getColumn(5).setPreferredWidth(0);
+        tblDetalleConsolidado.getColumnModel().getColumn(6).setPreferredWidth(0);
+        tblDetalleConsolidado.getColumnModel().getColumn(5).setMaxWidth(0);
+        tblDetalleConsolidado.getColumnModel().getColumn(5).setMinWidth(0);
+        tblDetalleConsolidado.getColumnModel().getColumn(6).setMaxWidth(0);
+        tblDetalleConsolidado.getColumnModel().getColumn(6).setMinWidth(0);
+        tblDetalleConsolidado.setSelectionBackground(Color.GRAY);
+        tblDetalleConsolidado.setIntercellSpacing(new Dimension(1, 1));
+        tblDetalleConsolidado.setRowMargin(1);
+        tblDetalleConsolidado.setOpaque(false);
+
+    }
+
+    private void FormatoUsuarioRiesgos() {
+        tblUsuarios.getColumnModel().getColumn(0).setPreferredWidth(350);
+        tblUsuarios.getColumnModel().getColumn(1).setPreferredWidth(150);
+        tblUsuarios.getColumnModel().getColumn(2).setPreferredWidth(150);
+        tblUsuarios.getColumnModel().getColumn(3).setPreferredWidth(150);
+        tblUsuarios.setSelectionBackground(Color.GRAY);
+        tblUsuarios.setIntercellSpacing(new Dimension(1, 1));
+        tblUsuarios.setRowMargin(1);
+        tblUsuarios.setOpaque(false);
+    }
+
+    private void FormatoDetallepaqueteLaboral() {
+        tblDetalle_pedido.getColumnModel().getColumn(0).setPreferredWidth(100);
+        tblDetalle_pedido.getColumnModel().getColumn(1).setPreferredWidth(280);
+        tblDetalle_pedido.getColumnModel().getColumn(2).setPreferredWidth(110);
+        tblDetalle_pedido.getColumnModel().getColumn(3).setPreferredWidth(100);
+        tblDetalle_pedido.getColumnModel().getColumn(4).setPreferredWidth(110);
+        tblDetalle_pedido.getColumnModel().getColumn(5).setPreferredWidth(100);
+        tblDetalle_pedido.getColumnModel().getColumn(6).setPreferredWidth(180);
+        tblDetalle_pedido.getColumnModel().getColumn(7).setPreferredWidth(250);
+        tblDetalle_pedido.getColumnModel().getColumn(8).setPreferredWidth(100);
+        tblDetalle_pedido.getColumnModel().getColumn(9).setPreferredWidth(250);
+        tblDetalle_pedido.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        tblDetalle_pedido.setSelectionBackground(Color.GRAY);
+        tblDetalle_pedido.setIntercellSpacing(new Dimension(1, 1));
+        tblDetalle_pedido.setRowMargin(1);
+        tblDetalle_pedido.setOpaque(false);
+    }
+
+    private void FormatoDetalleconsolidadoLaboral() {
+        tblDetalleConsolidado.getColumnModel().getColumn(5).setPreferredWidth(0);
+        tblDetalleConsolidado.getColumnModel().getColumn(6).setPreferredWidth(0);
+        tblDetalleConsolidado.getColumnModel().getColumn(5).setMaxWidth(0);
+        tblDetalleConsolidado.getColumnModel().getColumn(5).setMinWidth(0);
+        tblDetalleConsolidado.getColumnModel().getColumn(6).setMaxWidth(0);
+        tblDetalleConsolidado.getColumnModel().getColumn(6).setMinWidth(0);
+        tblDetalleConsolidado.setSelectionBackground(Color.GRAY);
+        tblDetalleConsolidado.setIntercellSpacing(new Dimension(1, 1));
+        tblDetalleConsolidado.setRowMargin(1);
+        tblDetalleConsolidado.setOpaque(false);
+    }
+
+    private void FormatoUsuarioLaboral() {
+        tblUsuarios.getColumnModel().getColumn(0).setPreferredWidth(350);
+        tblUsuarios.getColumnModel().getColumn(1).setPreferredWidth(150);
+        tblUsuarios.setSelectionBackground(Color.GRAY);
+        tblUsuarios.setIntercellSpacing(new Dimension(1, 1));
+        tblUsuarios.setRowMargin(1);
+        tblUsuarios.setOpaque(false);
+    }
+
+    public void RecibeDatosSinPaquete(String id, String empresa, String desde, String hasta) {
+        Empresa = empresa;
+        idEmpresa = id;
+        Desde = desde;
+        Hasta = hasta;
+        lblNombreEmpresa.setText(Empresa);
+
+        ListarDetalleSinPaquete();
+
+    }
+
+    private void ListarDetalleSinPaquete() {
+        try {
+            System.out.println("paso hasta aqui");
+            System.out.println(idEmpresa + "Paso por ListarDetallePaquete");
+            tblDetalle_pedido.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.ConsolidadoxEmpresa_SinPaquete(idEmpresa, Desde, Hasta)));
+            FormatoDetallepaqueteRiesgos();
+            System.out.println(idEmpresa + "Paso por ListarDetallePaquete");
+            System.out.println(idEmpresa);
+            int cantidad = tblDetalle_pedido.getRowCount();
+            txtTotalReportesSolicitados.setText("" + cantidad);
+            ListarDetalleConsolidadoSinPaquete();
+            ListarUsuarioSinPaquete();
         } catch (Exception e) {
         }
     }
@@ -168,64 +299,10 @@ public class FrmDialogDetallePaquete extends javax.swing.JDialog {
             System.out.println("paso hasta aqui Listar Usuario");
             tblUsuarios.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.Detalle_Usuario_SinPaquete(idEmpresa, Desde, Hasta)));
             System.out.println("Ya paso el Lsitado");
-            FormatoUsuario();
+            FormatoUsuarioRiesgos();
 
         } catch (Exception e) {
         }
-    }
-
-    private void ListarUsuarioPaqueteRiesgos() {
-        try {
-            tblUsuarios.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.Detalle_Usuario_Paquete_Riesgos(idPaquete)));
-            FormatoUsuario();
-
-        } catch (Exception e) {
-        }
-    }
-
-    private void FormatoDetallepaqueteRiesgos() {
-        tblDetalle_pedido.getColumnModel().getColumn(0).setPreferredWidth(100);
-        tblDetalle_pedido.getColumnModel().getColumn(1).setPreferredWidth(280);
-        tblDetalle_pedido.getColumnModel().getColumn(2).setPreferredWidth(110);
-        tblDetalle_pedido.getColumnModel().getColumn(3).setPreferredWidth(100);
-        tblDetalle_pedido.getColumnModel().getColumn(4).setPreferredWidth(110);
-        tblDetalle_pedido.getColumnModel().getColumn(5).setPreferredWidth(100);
-        tblDetalle_pedido.getColumnModel().getColumn(6).setPreferredWidth(180);
-        tblDetalle_pedido.getColumnModel().getColumn(7).setPreferredWidth(250);
-        tblDetalle_pedido.getColumnModel().getColumn(8).setPreferredWidth(100);
-        tblDetalle_pedido.getColumnModel().getColumn(9).setPreferredWidth(250);
-        tblDetalle_pedido.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        tblDetalle_pedido.setSelectionBackground(Color.GRAY);
-        tblDetalle_pedido.setIntercellSpacing(new Dimension(1, 1));
-        tblDetalle_pedido.setRowMargin(1);
-        tblDetalle_pedido.setOpaque(false);
-
-    }
-
-    private void FormatoDetalleconsolidadoRiesgos() {
-        tblDetalleConsolidado.getColumnModel().getColumn(5).setPreferredWidth(0);
-        tblDetalleConsolidado.getColumnModel().getColumn(6).setPreferredWidth(0);
-        tblDetalleConsolidado.getColumnModel().getColumn(5).setMaxWidth(0);
-        tblDetalleConsolidado.getColumnModel().getColumn(5).setMinWidth(0);
-        tblDetalleConsolidado.getColumnModel().getColumn(6).setMaxWidth(0);
-        tblDetalleConsolidado.getColumnModel().getColumn(6).setMinWidth(0);
-        tblDetalleConsolidado.setSelectionBackground(Color.GRAY);
-        tblDetalleConsolidado.setIntercellSpacing(new Dimension(1, 1));
-        tblDetalleConsolidado.setRowMargin(1);
-        tblDetalleConsolidado.setOpaque(false);
-
-    }
-
-    private void FormatoUsuario() {
-        tblUsuarios.getColumnModel().getColumn(0).setPreferredWidth(350);
-        tblUsuarios.getColumnModel().getColumn(1).setPreferredWidth(150);
-        tblUsuarios.getColumnModel().getColumn(2).setPreferredWidth(150);
-        tblUsuarios.getColumnModel().getColumn(3).setPreferredWidth(150);
-        tblUsuarios.setSelectionBackground(Color.GRAY);
-        tblUsuarios.setIntercellSpacing(new Dimension(1, 1));
-        tblUsuarios.setRowMargin(1);
-        tblUsuarios.setOpaque(false);
-
     }
 
     /**
