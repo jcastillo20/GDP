@@ -92,7 +92,9 @@ public class FrmDialogDetallePaquete extends javax.swing.JDialog {
             lblNombreEmpresa.setText(Empresa);
             lblServicio.setText(Servicio);
         }else{
-            Mensajes.msjMuestra("Servicio no validado");
+            ListarDetallePaqueteOtrosServicios();
+            lblNombreEmpresa.setText(Empresa);
+            lblServicio.setText(Servicio);
         }
 
     }
@@ -161,6 +163,41 @@ public class FrmDialogDetallePaquete extends javax.swing.JDialog {
     private void ListarUsuarioPaqueteLaboral() {
         try {
             tblUsuarios.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.Detalle_Usuario_Paquete_Laboral(idPaquete)));
+            FormatoUsuarioLaboral();
+
+        } catch (Exception e) {
+        }
+    }
+    
+        private void ListarDetallePaqueteOtrosServicios() {
+        try {
+            tblDetalle_pedido.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.ConsolidadoxEmpresa_Otros_Servicios(idPaquete)));
+            //FormatoDetallepaqueteLaboral();
+            ListarDetalleConsolidadoOtrosServicios();
+            ListarUsuarioPaqueteOtrosServicios();
+        } catch (Exception e) {
+        }
+    }
+
+    private void ListarDetalleConsolidadoOtrosServicios() {
+        try {
+            tblDetalleConsolidado.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.DetalleConsolidado_Otros_Servicios(idPaquete)));
+            FormatoDetalleconsolidadoLaboral();
+            if (tblDetalleConsolidado.getRowCount() > 0) {
+                txtReportesAFavor.setVisible(true);
+                txtTotalReportesSolicitados.setText("" + tblDetalleConsolidado.getValueAt(0, 5));
+                txtReportesAFavor.setText("" + tblDetalleConsolidado.getValueAt(0, 6));
+            } else {
+                Mensajes.msjMuestra("No hay Datos del paquete seleccionado");
+            }
+
+        } catch (Exception e) {
+        }
+    }
+
+    private void ListarUsuarioPaqueteOtrosServicios() {
+        try {
+            tblUsuarios.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.Detalle_Usuario_Paquete_Otros_Servicios(idPaquete)));
             FormatoUsuarioLaboral();
 
         } catch (Exception e) {

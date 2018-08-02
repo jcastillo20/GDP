@@ -223,6 +223,84 @@ public class Detalle_PedidoDAO {
         return rs;
     }
 
+    public static ResultSet ConsolidadoxEmpresa_Otros_Servicios(String id) {
+        ResultSet rs = null;
+        try {
+            String consulta = "select dp.numero_documento as DNI ,CONCAT(dp.apellido_paterno,\" \",dp.apellido_materno,\" \",dp.nombres) as NOMBRES,ifnull(dc.descripcion_larga,'') AS SERVICIO,\n"
+                    + "ifnull(dc2.descripcion_larga,'') AS LOCALIDAD,IFNULL(dp.modalidad_express,'') AS MODALIDAD,dp.fecha_creacion AS FECHA  ,ifnull(u.nombres,'') AS 'USUARIO',ifnull(dp.costo_servicio,'')\n"
+                    + "AS IMPORTE,IFNULL(TIMEDIFF(dp.fecha_actualizacion,dp.fecha_creacion),'') AS 'TIEMPO TRANSCURRIDO',dp.fecha_actualizacion AS RESPUESTA\n"
+                    + "from detalle_pedido dp inner join detalle_catalogo dc inner join usuario u inner join detalle_catalogo dc2 inner join pedido p \n"
+                    + "where dp.id_estado in (1,2) and dp.id_pedido=p.id_pedido and dc.id_catalogo=6 and dc.codigo=dp.id_tipo_servicio AND dc2.id_catalogo=8 and dc2.codigo=dp.id_localidad  and u.id_usuario=dp.id_usuario_crea\n"
+                    + "and dp.id_paquete_organizacion_solicitud=?\n"
+                    + "UNION ALL\n"
+                    + "select dp.numero_documento as DNI ,CONCAT(dp.apellido_paterno,\" \",dp.apellido_materno,\" \",dp.nombres) as NOMBRES,ifnull(dc.descripcion_larga,'') AS SERVICIO,\n"
+                    + "ifnull(dc2.descripcion_larga,'') AS LOCALIDAD,IFNULL(dp.modalidad_express,'') AS MODALIDAD,dp.fecha_creacion AS FECHA,'Pedido Automatico' AS 'USUARIO',ifnull(dp.costo_servicio,'')\n"
+                    + "AS IMPORTE,IFNULL(TIMEDIFF(dp.fecha_actualizacion,dp.fecha_creacion),'') AS 'TIEMPO TRANSCURRIDO',dp.fecha_actualizacion AS RESPUESTA\n"
+                    + "from detalle_pedido dp inner join detalle_catalogo dc inner join detalle_catalogo dc2 inner join pedido p \n"
+                    + "where dp.id_estado in (1,2) and dp.id_pedido=p.id_pedido  and dc.id_catalogo=6 and dc.codigo=dp.id_tipo_servicio AND dc2.id_catalogo=8 and dc2.codigo=dp.id_localidad  and dp.id_usuario_crea=0\n"
+                    + "and dp.id_paquete_organizacion_solicitud=?";
+            PreparedStatement pst = conexion.Conexion().prepareStatement(consulta);
+            pst.setString(1, id);
+            pst.setString(2, id);
+            rs = pst.executeQuery();
+            conexion.CerrarBD(conexion.Conexion());
+        } catch (Exception e) {
+            Mensajes.msjError("Error al Listar Detalle paquete" + e.getMessage());
+        }
+        return rs;
+    }
+
+    public static ResultSet DetalleConsolidado_Otros_Servicios(String id) {
+        ResultSet rs = null;
+        try {
+            String consulta = "SELECT \n"
+                    + "CONCAT(MONTHNAME(dp.fecha_creacion),\" - \",YEAR(dp.fecha_creacion))AS MES,dc.descripcion_larga as SERVICIO, COUNT(1) AS 'NRO DE REPORTES',\n"
+                    + "po.precio_unitario AS 'COSTO UNITARIO',po.precio_unitario*COUNT(1) AS TOTAL,\n"
+                    + "po.total_consultas-pos.consultas_disponible as 'CONSUMIDO',pos.consultas_disponible as 'DISPONIBLE'\n"
+                    + "FROM gdp.detalle_pedido dp  inner join detalle_catalogo dc INNER JOIN paquete_organizacion_solicitud pos ON dp.id_paquete_organizacion_solicitud = pos.id_paquete_organizacion_solicitud\n"
+                    + "INNER JOIN paquete_organizacion po inner join pedido p ON po.Id_paquete_organizacion = pos.id_paquete_organizacion\n"
+                    + "WHERE dp.id_estado in (1,2) and dp.id_pedido=p.id_pedido and  dc.id_catalogo=6  and dc.codigo=dp.id_tipo_servicio and dp.id_paquete_organizacion_solicitud =?  GROUP BY YEAR(dp.fecha_creacion),MONTHNAME(dp.fecha_creacion),dp.id_tipo_servicio ORDER BY dp.fecha_creacion";
+            PreparedStatement pst = conexion.Conexion().prepareStatement(consulta);
+            pst.setString(1, id);
+            rs = pst.executeQuery();
+            //conexion.CerrarBD(conexion.Conexion());
+        } catch (Exception e) {
+            Mensajes.msjError("Error al Listar Detalle Consolidado" + e.getMessage());
+        }
+        return rs;
+    }
+
+    public static ResultSet Detalle_Usuario_Paquete_Otros_Servicios(String id) {
+        ResultSet rs = null;
+        try {
+            String consulta = "SELECT T.USUARIOS,SUM(T.total_consulta) AS 'TOTAL CONSULTAS' from(\n"
+                    + "select u.nombres AS USUARIOS,COUNT(*) AS total_consulta\n"
+                    + "from detalle_pedido dp inner join usuario u \n"
+                    + "where dp.id_estado in (1,2)  and u.id_usuario=dp.id_usuario_crea \n"
+                    + "and dp.id_paquete_organizacion_solicitud=290\n"
+                    + "GROUP BY (dp.id_usuario_crea)\n"
+                    + "UNION ALL\n"
+                    + "select'Pedido Automatico' AS USUARIOS,COUNT(*) AS total_consulta\n"
+                    + "from detalle_pedido dp \n"
+                    + "where dp.id_estado in (1,2) and dp.id_usuario_crea=0\n"
+                    + "and dp.id_paquete_organizacion_solicitud=290\n"
+                    + "GROUP BY (dp.id_usuario_crea))T\n"
+                    + "GROUP BY (T.USUARIOS)";
+            PreparedStatement pst = conexion.Conexion().prepareStatement(consulta);
+            pst.setString(1, id);
+            pst.setString(2, id);
+            pst.setString(3, id);
+            pst.setString(4, id);
+            pst.setString(5, id);
+            pst.setString(6, id);
+            rs = pst.executeQuery();
+            // conexion.CerrarBD(conexion.Conexion());
+        } catch (Exception e) {
+            Mensajes.msjError("Error al Listar Usuario Consolidado" + e.getMessage());
+        }
+        return rs;
+    }
+
     public static ResultSet ConsolidadoxEmpresa_SinPaquete(String id, String desde, String hasta) {
         ResultSet rs = null;
         try {
