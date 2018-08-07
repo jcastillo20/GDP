@@ -21,14 +21,14 @@ public class FrmDialogFiltroPaquete extends javax.swing.JDialog {
     /**
      * Creates new form FrmDialogFiltroPaquete
      */
-    
-    String idEmpresa=null;
-    String Empresa=null;
-    
+    String idEmpresa = null;
+    String Empresa = null;
+    String Servicio = null;
+
     public FrmDialogFiltroPaquete(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        setIconImage (new ImageIcon(getClass().getResource("/image/ipartner.png")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("/image/ipartner.png")).getImage());
         Mensajes.centerComponent(this);
     }
 
@@ -50,6 +50,8 @@ public class FrmDialogFiltroPaquete extends javax.swing.JDialog {
         lblHasta = new javax.swing.JLabel();
         jdateHasta = new com.toedter.calendar.JDateChooser();
         btnBuscar = new javax.swing.JButton();
+        lblDesde1 = new javax.swing.JLabel();
+        cboServicios = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(0, 204, 204));
@@ -92,6 +94,11 @@ public class FrmDialogFiltroPaquete extends javax.swing.JDialog {
             }
         });
 
+        lblDesde1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblDesde1.setText("Servicio :");
+
+        cboServicios.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "- Servicio -", "Reporte de Riesgos", "Referencias Laborales", "Verificacion Domiciliaria", "Verificacion de Proveedor", "Verificaciones Academicas", "Certificado de Trabajo" }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -99,21 +106,27 @@ public class FrmDialogFiltroPaquete extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(btnCancelar)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(lblDesde)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jdateDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(30, 30, 30)
-                            .addComponent(lblHasta)
-                            .addGap(18, 18, 18)
-                            .addComponent(jdateHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(btnBuscar)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(404, 404, 404)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(lblDesde1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cboServicios, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnCancelar)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(lblDesde)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jdateDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(30, 30, 30)
+                                .addComponent(lblHasta)
+                                .addGap(18, 18, 18)
+                                .addComponent(jdateHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnBuscar)))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addGap(404, 404, 404))))
                 .addContainerGap(32, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -121,7 +134,11 @@ public class FrmDialogFiltroPaquete extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblDesde1)
+                    .addComponent(cboServicios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jdateDesde, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblDesde)
@@ -130,9 +147,9 @@ public class FrmDialogFiltroPaquete extends javax.swing.JDialog {
                             .addComponent(lblHasta)
                             .addComponent(btnBuscar))
                         .addComponent(jdateHasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                .addGap(27, 27, 27)
                 .addComponent(btnCancelar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -158,10 +175,33 @@ public class FrmDialogFiltroPaquete extends javax.swing.JDialog {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
+        ValidarServicio();
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
+    private void ValidarServicio() {
+        if (cboServicios.getSelectedIndex() == 0) {
+            Mensajes.msjMuestra("Seleccione un Servicio");
+        } else if (cboServicios.getSelectedIndex() == 1) {
+            Servicio = "RR";
+            Funcion_Busqueda();
+        } else if (cboServicios.getSelectedIndex() == 2) {
+            Servicio = "RL";
+            Funcion_Busqueda();
+        } else if (cboServicios.getSelectedIndex() == 3) {
+            Servicio = "VD";
+        } else if (cboServicios.getSelectedIndex() == 4) {
+            Servicio = "VP";
+        } else if (cboServicios.getSelectedIndex() == 5) {
+            Servicio = "VA";
+        } else if (cboServicios.getSelectedIndex() == 6) {
+            Servicio = "CT";
+        }
+    }
+
+    private void Funcion_Busqueda() {
         Date fechaDesde = jdateDesde.getDate();
         Date fechaHasta = jdateHasta.getDate();
-        String banco_ripley="431";
+        String banco_ripley = "431";
 
         if (fechaDesde == null || fechaHasta == null) {
             Mensajes.msjError("Complete las Fechas correctamente");
@@ -171,36 +211,39 @@ public class FrmDialogFiltroPaquete extends javax.swing.JDialog {
             SimpleDateFormat formatoFinal = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
             String Desde = formatoInicio.format(fechaDesde);
             String Hasta = formatoFinal.format(fechaHasta);
+            String servicio = Servicio;
+            System.out.println(Desde);
+            System.out.println(Hasta);
 
             JFrame f = (JFrame) JOptionPane.getFrameForComponent(this);
             FrmDialogDetallePaquete detalle = new FrmDialogDetallePaquete(f, true);
-            
+
             System.out.println(idEmpresa + "mando el id");
-            detalle.RecibeDatosSinPaquete(idEmpresa,Empresa,Desde,Hasta);        
+            detalle.RecibeDatosSinPaquete(idEmpresa, Empresa, Desde, Hasta, servicio);
             detalle.lblaFavor.setVisible(false);
             detalle.txtReportesAFavor.setVisible(false);
-            detalle.show();
+                detalle.show();
             this.dispose();
         } else {
             Mensajes.msjError("El parametro de fecha no es correcto");
         }
-    }//GEN-LAST:event_btnBuscarActionPerformed
+    }
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    public void RecibeID(String id,String empresa) {
+    public void RecibeID(String id, String empresa) {
 
         System.out.println(id + "recibo el id");
         idEmpresa = id;
-        Empresa=empresa;
+        Empresa = empresa;
         lblEmpresa.setText(Empresa);
         System.out.println(idEmpresa + "Paso por recibeID");
 
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -246,11 +289,13 @@ public class FrmDialogFiltroPaquete extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JComboBox<String> cboServicios;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private com.toedter.calendar.JDateChooser jdateDesde;
     private com.toedter.calendar.JDateChooser jdateHasta;
     private javax.swing.JLabel lblDesde;
+    private javax.swing.JLabel lblDesde1;
     private javax.swing.JLabel lblEmpresa;
     private javax.swing.JLabel lblHasta;
     // End of variables declaration//GEN-END:variables

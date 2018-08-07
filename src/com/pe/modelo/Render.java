@@ -66,3 +66,4 @@ public class Render extends DefaultTableCellRenderer{
                 hasFocus, row, column); //To change body of generated methods, choose Tools | Templates.
     }
 }
+
