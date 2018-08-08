@@ -302,12 +302,16 @@ public class FrmDialogDetallePaquete extends javax.swing.JDialog {
             ListarDetalleSinPaqueteLaboral();
         }else if(Servicio=="VD"){
             lblServicio.setText("Domiciliaria");
+            ListarDetalleSinPaqueteOtrosServicios();
         }else if(Servicio=="VP"){
             lblServicio.setText("Proveedor");
+            ListarDetalleSinPaqueteOtrosServicios();
         }else if(Servicio=="VA"){
             lblServicio.setText("Academicas");
+            ListarDetalleSinPaqueteOtrosServicios();
         }else if(Servicio=="CT"){
             lblServicio.setText("Academicas");
+            ListarDetalleSinPaqueteOtrosServicios();
         }
        
     }
@@ -359,8 +363,8 @@ public class FrmDialogDetallePaquete extends javax.swing.JDialog {
             FormatoDetallepaqueteRiesgos();;
             int cantidad = tblDetalle_pedido.getRowCount();
             txtTotalReportesSolicitados.setText("" + cantidad);
-            ListarDetalleConsolidadoSinPaqueteRiesgos();
-            ListarUsuarioSinPaqueteRiesgos();
+            ListarDetalleConsolidadoSinPaqueteLaboral();
+            ListarUsuarioSinPaqueteLaboral();
         } catch (Exception e) {
         }
     }
@@ -394,6 +398,42 @@ public class FrmDialogDetallePaquete extends javax.swing.JDialog {
     }
    
 
+    private void ListarDetalleSinPaqueteOtrosServicios() {
+        try {
+            tblDetalle_pedido.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.ConsolidadoxEmpresa_SinPaquete_Otros_Servicios(idEmpresa, Desde, Hasta,Servicio)));
+            FormatoDetallepaqueteRiesgos();;
+            int cantidad = tblDetalle_pedido.getRowCount();
+            txtTotalReportesSolicitados.setText("" + cantidad);
+            ListarDetalleConsolidadoSinPaqueteOtrosServicios();
+            ListarUsuarioSinPaqueteOtrosServicios();
+        } catch (Exception e) {
+        }
+    }
+
+    private void ListarDetalleConsolidadoSinPaqueteOtrosServicios() {
+        try {
+            tblDetalleConsolidado.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.DetalleConsolidado_SinPaquete_Otros_Servicios(idEmpresa, Desde, Hasta,Servicio)));
+            FormatoDetalleconsolidadoLaboral();
+            if (tblDetalleConsolidado.getRowCount() > 0) {
+                txtTotalReportesSolicitados.setText("" + tblDetalleConsolidado.getValueAt(0, 5));
+                txtReportesAFavor.setVisible(false);
+                tblDetalle_pedido.setVisible(true);
+
+            } else {
+                Mensajes.msjMuestra("No hay Datos del paquete seleccionado");
+            }
+
+        } catch (Exception e) {
+        }
+    }
+
+    private void ListarUsuarioSinPaqueteOtrosServicios() {
+        try {
+            tblUsuarios.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.Detalle_Usuario_SinPaquete_Otros_Servicios(idEmpresa, Desde, Hasta,Servicio)));
+           
+        } catch (Exception e) {
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

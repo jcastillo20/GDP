@@ -189,12 +189,16 @@ public class FrmDialogFiltroPaquete extends javax.swing.JDialog {
             Funcion_Busqueda();
         } else if (cboServicios.getSelectedIndex() == 3) {
             Servicio = "VD";
+            Funcion_Busqueda();
         } else if (cboServicios.getSelectedIndex() == 4) {
             Servicio = "VP";
+            Funcion_Busqueda();
         } else if (cboServicios.getSelectedIndex() == 5) {
             Servicio = "VA";
+            Funcion_Busqueda();
         } else if (cboServicios.getSelectedIndex() == 6) {
             Servicio = "CT";
+            Funcion_Busqueda();
         }
     }
 
