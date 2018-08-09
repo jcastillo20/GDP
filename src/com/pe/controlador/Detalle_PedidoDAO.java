@@ -716,7 +716,6 @@ public class Detalle_PedidoDAO {
             System.out.println(ex.getMessage());
         } finally {
             try {
-                ps.close();
                 rs.close();
             } catch (Exception ex) {
             }
