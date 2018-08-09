@@ -12,77 +12,151 @@ import java.util.Date;
  * @author JUAN
  */
 public class detalle_pedido {
+
     private int id_detalle_pedido;
-	private int id_pedido;
-	private String id_tipo_documento;
-	private String numero_documento;
-	private String apellido_paterno;
-	private String apellido_materno;
-	private String nombres;
-	private String id_localidad;
-	private String id_tipo_servicio;
-	private String archivo;
-	private String nombre_archivo;
-	private String centro_costo;
-	private double costo_servicio;
-	private String id_estado;
-	private Date fecha_creacion;
-	private Date fecha_actualizacion;
-	private String id_usuario_crea;
-	private String id_usuario_actualiza;
-	private double file_size;
-	private String flag_antecedentes;
-	private int stage_id;
-	private String ruta_archivo;
-	private String telefonos_contacto;
-	private String cargo_postula;
-	private String id_permiso_comunicarse;
-	private String id_tiempo_validar;
-	private String jefe_directo_1;
-	private String telefonos_jefe_directo_1;
-	private String empresa_jefe_directo_1;
-	private String telefonos_rrhh_jefe_directo_1;
-	private String jefe_directo_2;
-	private String telefonos_jefe_directo_2;
-	private String empresa_jefe_directo_2;
-	private String telefonos_rrhh_jefe_directo_2;
-	private String jefe_directo_3;
-	private String telefonos_jefe_directo_3;
-	private String empresa_jefe_directo_3;
-	private String telefonos_rrhh_jefe_directo_3;
-	private String id_estado_postulante_empresa_1;
-	private String observaciones_postulante;
-	private String ruta_archivo_adjunto;
-	private String id_estado_reporte;
-	private int cantidad_documentos_validados;
-	private int id_usuario_asignado;
-	private String id_catalogo_resumen_investigacion;
-	private String ruta_archivo_word;
-	private String nombre_archivo_word;
-	private int id_usuario_enviado;
-	private String comentario;
-	private int id_paquete_organizacion_solicitud;
-	private String id_ubigeo;
-	private String urbanizacion;
-	private String direccion;
-	private String referencia;
-	private String telefonos_verificacion_domiciliaria;
+    private int id_pedido;
+    private String id_tipo_documento;
+    private String numero_documento;
+    private String apellido_paterno;
+    private String apellido_materno;
+    private String nombres;
+    private String id_localidad;
+    private String id_tipo_servicio;
+    private String archivo;
+    private String nombre_archivo;
+    private String centro_costo;
+    private double costo_servicio;
+    private String id_estado;
+    private Date fecha_creacion;
+    private Date fecha_actualizacion;
+    private String id_usuario_crea;
+    private String id_usuario_actualiza;
+    private double file_size;
+    private String flag_antecedentes;
+    private int stage_id;
+    private String ruta_archivo;
+    private String telefonos_contacto;
+    private String cargo_postula;
+    private String id_permiso_comunicarse;
+    private String id_tiempo_validar;
+    private String jefe_directo_1;
+    private String telefonos_jefe_directo_1;
+    private String empresa_jefe_directo_1;
+    private String telefonos_rrhh_jefe_directo_1;
+    private String jefe_directo_2;
+    private String telefonos_jefe_directo_2;
+    private String empresa_jefe_directo_2;
+    private String telefonos_rrhh_jefe_directo_2;
+    private String jefe_directo_3;
+    private String telefonos_jefe_directo_3;
+    private String empresa_jefe_directo_3;
+    private String telefonos_rrhh_jefe_directo_3;
+    private String id_estado_postulante_empresa_1;
+    private String observaciones_postulante;
+    private String ruta_archivo_adjunto;
+    private String id_estado_reporte;
+    private int cantidad_documentos_validados;
+    private int id_usuario_asignado;
+    private String id_catalogo_resumen_investigacion;
+    private String ruta_archivo_word;
+    private String nombre_archivo_word;
+    private int id_usuario_enviado;
+    private String comentario;
+    private int id_paquete_organizacion_solicitud;
+    private String id_ubigeo;
+    private String urbanizacion;
+    private String direccion;
+    private String referencia;
+    private String telefonos_verificacion_domiciliaria;
+    private String id_proveedor_empresa_solicitante;
+    private String razon_social_proveedor;
+    private String id_tipo_proveedor;
+    private String unidad_investigacion;
+    private String modalidad_express;
+    private String region;
+    private String tienda;
+    private String puesto;
+
+    public String getId_proveedor_empresa_solicitante() {
+        return id_proveedor_empresa_solicitante;
+    }
+
+    public void setId_proveedor_empresa_solicitante(String id_proveedor_empresa_solicitante) {
+        this.id_proveedor_empresa_solicitante = id_proveedor_empresa_solicitante;
+    }
+
+    public String getRazon_social_proveedor() {
+        return razon_social_proveedor;
+    }
+
+    public void setRazon_social_proveedor(String razon_social_proveedor) {
+        this.razon_social_proveedor = razon_social_proveedor;
+    }
+
+    public String getId_tipo_proveedor() {
+        return id_tipo_proveedor;
+    }
+
+    public void setId_tipo_proveedor(String id_tipo_proveedor) {
+        this.id_tipo_proveedor = id_tipo_proveedor;
+    }
+
+    public String getUnidad_investigacion() {
+        return unidad_investigacion;
+    }
+
+    public void setUnidad_investigacion(String unidad_investigacion) {
+        this.unidad_investigacion = unidad_investigacion;
+    }
+
+    public String getModalidad_express() {
+        return modalidad_express;
+    }
+
+    public void setModalidad_express(String modalidad_express) {
+        this.modalidad_express = modalidad_express;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public String getTienda() {
+        return tienda;
+    }
+
+    public void setTienda(String tienda) {
+        this.tienda = tienda;
+    }
+
+    public String getPuesto() {
+        return puesto;
+    }
+
+    public void setPuesto(String puesto) {
+        this.puesto = puesto;
+    }
 
     public detalle_pedido() {
     }
 
-    public detalle_pedido(String dni,String nombres,String servicio,String localidad,String centro_costo,String fecha,String usuario,String costo,String antecedens) {
-        this.ruta_archivo=dni;
-	this.telefonos_contacto=nombres;
-	this.cargo_postula=servicio;
-	this.id_permiso_comunicarse=localidad;
-	this.id_tiempo_validar=centro_costo;
-	this.jefe_directo_1=fecha;
-	this.telefonos_jefe_directo_1=usuario;
-	this.empresa_jefe_directo_1=costo;
-        this.telefonos_rrhh_jefe_directo_1=antecedens;
+    public detalle_pedido(String dni, String nombres, String servicio, String localidad, String centro_costo, String fecha, String usuario, String costo, String antecedens) {
+        this.ruta_archivo = dni;
+        this.telefonos_contacto = nombres;
+        this.cargo_postula = servicio;
+        this.id_permiso_comunicarse = localidad;
+        this.id_tiempo_validar = centro_costo;
+        this.jefe_directo_1 = fecha;
+        this.telefonos_jefe_directo_1 = usuario;
+        this.empresa_jefe_directo_1 = costo;
+        this.telefonos_rrhh_jefe_directo_1 = antecedens;
     }
-    public detalle_pedido(int id_detalle_pedido, int id_pedido, String id_tipo_documento, String numero_documento, String apellido_paterno, String apellido_materno, String nombres, String id_localidad, String id_tipo_servicio, String archivo, String nombre_archivo, String centro_costo, double costo_servicio, String id_estado, Date fecha_creacion, Date fecha_actualizacion, String id_usuario_crea, String id_usuario_actualiza, double file_size, String flag_antecedentes, int stage_id, String ruta_archivo, String telefonos_contacto, String cargo_postula, String id_permiso_comunicarse, String id_tiempo_validar, String jefe_directo_1, String telefonos_jefe_directo_1, String empresa_jefe_directo_1, String telefonos_rrhh_jefe_directo_1, String jefe_directo_2, String telefonos_jefe_directo_2, String empresa_jefe_directo_2, String telefonos_rrhh_jefe_directo_2, String jefe_directo_3, String telefonos_jefe_directo_3, String empresa_jefe_directo_3, String telefonos_rrhh_jefe_directo_3, String id_estado_postulante_empresa_1, String observaciones_postulante, String ruta_archivo_adjunto, String id_estado_reporte, int cantidad_documentos_validados, int id_usuario_asignado, String id_catalogo_resumen_investigacion, String ruta_archivo_word, String nombre_archivo_word, int id_usuario_enviado, String comentario, int id_paquete_organizacion_solicitud, String id_ubigeo, String urbanizacion, String direccion, String referencia, String telefonos_verificacion_domiciliaria) {
+
+    public detalle_pedido(int id_detalle_pedido, int id_pedido, String id_tipo_documento, String numero_documento, String apellido_paterno, String apellido_materno, String nombres, String id_localidad, String id_tipo_servicio, String archivo, String nombre_archivo, String centro_costo, double costo_servicio, String id_estado, Date fecha_creacion, Date fecha_actualizacion, String id_usuario_crea, String id_usuario_actualiza, double file_size, String flag_antecedentes, int stage_id, String ruta_archivo, String telefonos_contacto, String cargo_postula, String id_permiso_comunicarse, String id_tiempo_validar, String jefe_directo_1, String telefonos_jefe_directo_1, String empresa_jefe_directo_1, String telefonos_rrhh_jefe_directo_1, String jefe_directo_2, String telefonos_jefe_directo_2, String empresa_jefe_directo_2, String telefonos_rrhh_jefe_directo_2, String jefe_directo_3, String telefonos_jefe_directo_3, String empresa_jefe_directo_3, String telefonos_rrhh_jefe_directo_3, String id_estado_postulante_empresa_1, String observaciones_postulante, String ruta_archivo_adjunto, String id_estado_reporte, int cantidad_documentos_validados, int id_usuario_asignado, String id_catalogo_resumen_investigacion, String ruta_archivo_word, String nombre_archivo_word, int id_usuario_enviado, String comentario, int id_paquete_organizacion_solicitud, String id_ubigeo, String urbanizacion, String direccion, String referencia, String telefonos_verificacion_domiciliaria, String id_proveedor_empresa_solicitante, String razon_social_proveedor, String id_tipo_proveedor, String unidad_investigacion, String modalidad_express, String region, String tienda, String puesto) {
         this.id_detalle_pedido = id_detalle_pedido;
         this.id_pedido = id_pedido;
         this.id_tipo_documento = id_tipo_documento;
@@ -138,7 +212,16 @@ public class detalle_pedido {
         this.direccion = direccion;
         this.referencia = referencia;
         this.telefonos_verificacion_domiciliaria = telefonos_verificacion_domiciliaria;
+        this.id_proveedor_empresa_solicitante = id_proveedor_empresa_solicitante;
+        this.razon_social_proveedor = razon_social_proveedor;
+        this.id_tipo_proveedor = id_tipo_proveedor;
+        this.unidad_investigacion = unidad_investigacion;
+        this.modalidad_express = modalidad_express;
+        this.region = region;
+        this.tienda = tienda;
+        this.puesto = puesto;
     }
+
 
     public int getId_detalle_pedido() {
         return id_detalle_pedido;
@@ -579,6 +662,5 @@ public class detalle_pedido {
     public void setTelefonos_verificacion_domiciliaria(String telefonos_verificacion_domiciliaria) {
         this.telefonos_verificacion_domiciliaria = telefonos_verificacion_domiciliaria;
     }
-        
-        
+
 }
