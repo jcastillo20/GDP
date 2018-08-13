@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -719,6 +720,77 @@ public class Detalle_PedidoDAO {
                 rs.close();
             } catch (Exception ex) {
             }
+        }
+        return list;
+    }
+
+    public Collection<detalle_pedido> Busqueda_DNI_2(String dni) {
+        ArrayList<detalle_pedido> list = new ArrayList<>();
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+
+        try {
+
+            String sql = "SELECT T.ID,T.ESTADO_DETALLE,T.ESTADO_PEDIDO,T.PAQUETE,T.EMPRESA,T.FECHA,T.NUMERO_DOCUMENTO,T.POSTULANTE,T.SERVICIO,T.MODALIDAD,\n"
+                    + "T.USUARIO FROM(\n"
+                    + "select dp.id_detalle_pedido AS ID,dp.id_estado as \"ESTADO_DETALLE\",p.id_estado as \"ESTADO_PEDIDO\",dp.id_paquete_organizacion_solicitud as PAQUETE,\n"
+                    + "o.razon_social as EMPRESA,dp.fecha_creacion AS FECHA,\n"
+                    + "dp.numero_documento AS \"NUMERO_DOCUMENTO\",CONCAT(dp.apellido_paterno,' ',dp.apellido_materno,' ',dp.nombres)as POSTULANTE\n"
+                    + ",dc.descripcion_larga as SERVICIO,dp.modalidad_express AS MODALIDAD,u.nombres AS USUARIO\n"
+                    + "from detalle_pedido dp \n"
+                    + "inner join pedido p inner join organizacion o inner join usuario u inner join detalle_catalogo dc\n"
+                    + "on dp.id_pedido=p.id_pedido and p.id_organizacion=o.id_organizacion and dp.id_usuario_crea=u.id_usuario and\n"
+                    + "dc.id_catalogo=6 and dc.codigo=dp.id_tipo_servicio and dp.id_estado in (1,2)\n"
+                    + "where dp.numero_documento=?\n"
+                    + "GROUP BY dp.id_detalle_pedido\n"
+                    + "UNION ALL\n"
+                    + "select dp.id_detalle_pedido AS ID,dp.id_estado as \"ESTADO_DETALLE\",p.id_estado as \"ESTADO_PEDIDO\",dp.id_paquete_organizacion_solicitud as PAQUETE\n"
+                    + ",o.razon_social as EMPRESA,dp.fecha_creacion AS FECHA,\n"
+                    + "dp.numero_documento AS \"NUMERO_DOCUMENTO\",CONCAT(dp.apellido_paterno,' ',dp.apellido_materno,' ',dp.nombres)as POSTULANTE\n"
+                    + ",dc.descripcion_larga as SERVICIO,'NO' AS MODALIDAD,'Pedido Automatico' AS USUARIO\n"
+                    + "from detalle_pedido dp \n"
+                    + "inner join pedido p inner join organizacion o inner join usuario u inner join detalle_catalogo dc\n"
+                    + "on dp.id_estado in (1,2) AND dp.id_pedido=p.id_pedido and p.id_organizacion=o.id_organizacion  and\n"
+                    + "dc.id_catalogo=6 and dc.codigo=dp.id_tipo_servicio and dp.id_usuario_crea=0\n"
+                    + "where dp.numero_documento=?\n"
+                    + "GROUP BY dp.id_detalle_pedido\n"
+                    + "UNION ALL\n"
+                    + "select dp.id_detalle_pedido AS ID,dp.id_estado as \"ESTADO_DETALLE\",p.id_estado as \"ESTADO_PEDIDO\",dp.id_paquete_organizacion_solicitud as PAQUETE\n"
+                    + ",o.razon_social as EMPRESA,dp.fecha_creacion AS FECHA,\n"
+                    + "dp.numero_documento AS \"NUMERO_DOCUMENTO\",dp.razon_social_proveedor POSTULANTE\n"
+                    + ",dc.descripcion_larga as SERVICIO,'NO' AS MODALIDAD,u.nombres  AS USUARIO\n"
+                    + "from detalle_pedido dp \n"
+                    + "inner join pedido p inner join organizacion o inner join usuario u inner join detalle_catalogo dc\n"
+                    + "on dp.id_estado in (1,2) AND dp.id_pedido=p.id_pedido and p.id_organizacion=o.id_organizacion  and\n"
+                    + "dc.id_catalogo=6 and dc.codigo=dp.id_tipo_servicio and dp.apellido_paterno is null\n"
+                    + "where dp.numero_documento=?\n"
+                    + "GROUP BY dp.id_detalle_pedido\n"
+                    + ")T";
+            ps = conexion.Conexion().prepareStatement(sql);
+            ps.setString(1, dni);
+            ps.setString(2, dni);
+            ps.setString(3, dni);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                detalle_pedido vo = new detalle_pedido();
+
+                vo.setId_detalle_pedido(rs.getInt("ID"));
+                vo.setId_localidad(rs.getString("ESTADO_DETALLE"));
+                vo.setId_tipo_servicio(rs.getString("ESTADO_PEDIDO"));
+                vo.setNombre_archivo(rs.getString("PAQUETE"));
+                vo.setApellido_paterno(rs.getString("EMPRESA"));
+                vo.setFecha_creacion(rs.getTimestamp("FECHA"));
+                System.out.println(rs.getString("FECHA"));
+                vo.setNumero_documento(rs.getString("NUMERO_DOCUMENTO"));
+                vo.setApellido_materno(rs.getString("POSTULANTE"));
+                vo.setNombres(rs.getString("SERVICIO"));
+                vo.setModalidad_express(rs.getString("MODALIDAD"));
+                vo.setRegion(rs.getString("USUARIO"));
+                list.add(vo);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e.toString());
         }
         return list;
     }

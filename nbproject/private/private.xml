@@ -5,10 +5,8 @@
         <group>
             <file>file:/C:/Users/JUAN/Documents/GitHub/GDP/src/com/pe/controlador/Detalle_PedidoDAO.java</file>
             <file>file:/C:/Users/JUAN/Documents/GitHub/GDP/src/com/pe/vista/IFrmCambiarEstadoPedido.java</file>
-            <file>file:/C:/Users/JUAN/Documents/GitHub/GDP/src/com/pe/vista/FrmDialogDetallePaquete.java</file>
             <file>file:/C:/Users/JUAN/Documents/GitHub/GDP/src/com/pe/extras/MyEditor.java</file>
-            <file>file:/C:/Users/JUAN/Documents/GitHub/GDP/src/com/pe/modelo/detalle_pedido.java</file>
-            <file>file:/C:/Users/JUAN/Documents/GitHub/GDP/src/com/pe/modelo/Render2.java</file>
+            <file>file:/C:/Users/JUAN/Documents/GitHub/GDP/src/com/pe/controlador/OrganizacionDAO.java</file>
         </group>
     </open-files>
 </project-private>

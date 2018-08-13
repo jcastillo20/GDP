@@ -227,7 +227,7 @@ public class MyEditor {
             for (int i = 0; i < list.size(); i++) {
                 Object fila[] = new Object[13];
                 vo = list.get(i);
-                SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy HH:mm:S");
+                SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                 fila[0] = vo.getId_detalle_pedido();
                 fila[1] = vo.getId_localidad();
                 fila[2] = vo.getId_tipo_servicio();
@@ -242,10 +242,28 @@ public class MyEditor {
                 fila[11] = btn_actualizar;
                 fila[12] = btn_eliminar;
                 dt.addRow(fila);
+
             }
             tabla.setModel(dt);
             tabla.setRowHeight(20);
 
+        } else {
+            Mensajes.msjError("No se encontro datos con el siguiente dni: " + dni);
+            dt.addColumn("ID");
+            dt.addColumn("ESTADO DETALLE");
+            dt.addColumn("ESTADO PEDIDO");
+            dt.addColumn("PAQUETE");
+            dt.addColumn("EMPRESA");
+            dt.addColumn("FECHA");
+            dt.addColumn("NUMERO DOCUMENTO");
+            dt.addColumn("POSTULANTE");
+            dt.addColumn("SERVICIO");
+            dt.addColumn("MODALIDAD");
+            dt.addColumn("USUARIO");
+            dt.addColumn("ACTUALIZAR");
+            dt.addColumn("ELIMINAR");
+            tabla.setModel(dt);
+            tabla.setRowHeight(20);
         }
     }
 }
