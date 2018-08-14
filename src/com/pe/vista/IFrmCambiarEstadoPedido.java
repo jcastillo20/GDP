@@ -25,9 +25,6 @@ public class IFrmCambiarEstadoPedido extends javax.swing.JInternalFrame {
     /**
      * Creates new form IFrmCambiarEstadoPedido
      */
-    DefaultTableModel modelo = new DefaultTableModel();
-    Detalle_PedidoDAO daopedido = new Detalle_PedidoDAO();
-
     public IFrmCambiarEstadoPedido() {
         initComponents();
         Mensajes.centerComponent(this);
@@ -128,70 +125,36 @@ public class IFrmCambiarEstadoPedido extends javax.swing.JInternalFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         String dni = txtnumeroDocumento.getText().toString().trim();
-        //myEdit.VisualizarData_porDNI(tblDatos, dni);
-        data(dni);
-        //FormatoDatos();
+        myEdit.VisualizarData_porDNI(tblDatos, dni);
+        FormatoDatos();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void data(String dni) {
-        tblDatos.setModel(modelo);
-        modelo.setColumnCount(0);
-        modelo.setRowCount(0);
-        //modelo.addColumn("ID");
-        //modelo.addColumn("ESTADO DETALLE");
-       // modelo.addColumn("ESTADO PEDIDO");
-       // modelo.addColumn("PAQUETE");
-        modelo.addColumn("EMPRESA");
-        modelo.addColumn("FECHA");
-        modelo.addColumn("NUMERO DOCUMENTO");
-        modelo.addColumn("POSTULANTE");
-        modelo.addColumn("SERVICIO");
-        modelo.addColumn("MODALIDAD");
-        modelo.addColumn("USUARIO");
-
-        for (detalle_pedido carta : daopedido.Busqueda_DNI_2(dni)) {
-            modelo.addRow(new Object[]{
-                //carta.getId_detalle_pedido() + "",
-                //carta.getId_localidad() + "",
-               // carta.getId_tipo_servicio() + "",
-               // carta.getNombre_archivo() + "",
-                carta.getApellido_paterno() + "",
-                carta.getFecha_creacion() + "",
-                carta.getNumero_documento() + "",
-                carta.getApellido_materno() + "",
-                carta.getNombres() + "",
-                carta.getModalidad_express() + "",
-                carta.getRegion() + "",});
-            System.out.println("" + carta.getFecha_creacion());
-
-        }
-
-    }
+   
 
     private void FormatoDatos() {
-//        tblDatos.getColumnModel().getColumn(0).setMaxWidth(0);
-//        tblDatos.getColumnModel().getColumn(0).setMinWidth(0);
-//        tblDatos.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(0);
-//        tblDatos.getTableHeader().getColumnModel().getColumn(0).setMinWidth(0);
-//        tblDatos.getColumnModel().getColumn(1).setMaxWidth(0);
-//        tblDatos.getColumnModel().getColumn(1).setMinWidth(0);
-//        tblDatos.getTableHeader().getColumnModel().getColumn(1).setMaxWidth(0);
-//        tblDatos.getTableHeader().getColumnModel().getColumn(1).setMinWidth(0);
-//        tblDatos.getColumnModel().getColumn(2).setMaxWidth(0);
-//        tblDatos.getColumnModel().getColumn(2).setMinWidth(0);
-//        tblDatos.getTableHeader().getColumnModel().getColumn(2).setMaxWidth(0);
-//        tblDatos.getTableHeader().getColumnModel().getColumn(2).setMinWidth(0);
-//        tblDatos.getColumnModel().getColumn(3).setMaxWidth(0);
-//        tblDatos.getColumnModel().getColumn(3).setMinWidth(0);
-//        tblDatos.getTableHeader().getColumnModel().getColumn(3).setMaxWidth(0);
-//        tblDatos.getTableHeader().getColumnModel().getColumn(3).setMinWidth(0);
-        tblDatos.getColumnModel().getColumn(0).setPreferredWidth(200);
-        tblDatos.getColumnModel().getColumn(1).setPreferredWidth(125);
-        tblDatos.getColumnModel().getColumn(2).setPreferredWidth(100);
-        tblDatos.getColumnModel().getColumn(3).setPreferredWidth(250);
-        tblDatos.getColumnModel().getColumn(4).setPreferredWidth(100);
-        tblDatos.getColumnModel().getColumn(5).setPreferredWidth(110);
-        tblDatos.getColumnModel().getColumn(6).setPreferredWidth(250);
+        tblDatos.getColumnModel().getColumn(0).setMaxWidth(0);
+        tblDatos.getColumnModel().getColumn(0).setMinWidth(0);
+        tblDatos.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(0);
+        tblDatos.getTableHeader().getColumnModel().getColumn(0).setMinWidth(0);
+        tblDatos.getColumnModel().getColumn(1).setMaxWidth(0);
+        tblDatos.getColumnModel().getColumn(1).setMinWidth(0);
+        tblDatos.getTableHeader().getColumnModel().getColumn(1).setMaxWidth(0);
+        tblDatos.getTableHeader().getColumnModel().getColumn(1).setMinWidth(0);
+        tblDatos.getColumnModel().getColumn(2).setMaxWidth(0);
+        tblDatos.getColumnModel().getColumn(2).setMinWidth(0);
+        tblDatos.getTableHeader().getColumnModel().getColumn(2).setMaxWidth(0);
+        tblDatos.getTableHeader().getColumnModel().getColumn(2).setMinWidth(0);
+        tblDatos.getColumnModel().getColumn(3).setMaxWidth(0);
+        tblDatos.getColumnModel().getColumn(3).setMinWidth(0);
+        tblDatos.getTableHeader().getColumnModel().getColumn(3).setMaxWidth(0);
+        tblDatos.getTableHeader().getColumnModel().getColumn(3).setMinWidth(0);
+        tblDatos.getColumnModel().getColumn(4).setPreferredWidth(200);
+        tblDatos.getColumnModel().getColumn(5).setPreferredWidth(125);
+        tblDatos.getColumnModel().getColumn(6).setPreferredWidth(100);
+        tblDatos.getColumnModel().getColumn(7).setPreferredWidth(250);
+        tblDatos.getColumnModel().getColumn(8).setPreferredWidth(100);
+        tblDatos.getColumnModel().getColumn(9).setPreferredWidth(110);
+        tblDatos.getColumnModel().getColumn(10).setPreferredWidth(250);
         tblDatos.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         tblDatos.setSelectionBackground(Color.GRAY);
         tblDatos.setIntercellSpacing(new Dimension(1, 1));
