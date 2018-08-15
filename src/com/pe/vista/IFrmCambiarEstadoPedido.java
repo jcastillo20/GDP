@@ -25,6 +25,8 @@ public class IFrmCambiarEstadoPedido extends javax.swing.JInternalFrame {
     /**
      * Creates new form IFrmCambiarEstadoPedido
      */
+    String servicio;
+
     public IFrmCambiarEstadoPedido() {
         initComponents();
         Mensajes.centerComponent(this);
@@ -50,6 +52,8 @@ public class IFrmCambiarEstadoPedido extends javax.swing.JInternalFrame {
             }
         };
         jButton1 = new javax.swing.JButton();
+        cboServicios = new javax.swing.JComboBox<>();
+        lblDesde1 = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
@@ -84,39 +88,53 @@ public class IFrmCambiarEstadoPedido extends javax.swing.JInternalFrame {
             }
         });
 
+        cboServicios.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "- Servicio -", "Reporte de Riesgos", "Referencias Laborales", "Verificacion Domiciliaria", "Verificacion de Proveedor", "Verificaciones Academicas", "Certificado de Trabajo" }));
+
+        lblDesde1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblDesde1.setText("Servicio :");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtnumeroDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(29, 29, 29)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel1))
-                        .addGap(0, 335, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtnumeroDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(79, 79, 79)
+                        .addComponent(lblDesde1)
+                        .addGap(18, 18, 18)
+                        .addComponent(cboServicios, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(345, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(jLabel1)
-                .addGap(22, 22, 22)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblDesde1)
+                    .addComponent(cboServicios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtnumeroDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
-                .addGap(27, 27, 27)
+                .addGap(37, 37, 37)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addGap(27, 27, 27))
         );
 
         pack();
@@ -125,11 +143,35 @@ public class IFrmCambiarEstadoPedido extends javax.swing.JInternalFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         String dni = txtnumeroDocumento.getText().toString().trim();
-        myEdit.VisualizarData_porDNI(tblDatos, dni);
-        FormatoDatos();
-    }//GEN-LAST:event_jButton1ActionPerformed
 
-   
+        if (cboServicios.getSelectedIndex() == 0) {
+            Mensajes.msjMuestra("Seleccione un Servicio");
+        } else if (cboServicios.getSelectedIndex() == 1) {
+            servicio = "RR";
+            myEdit.VisualizarData_porDNI(tblDatos, dni,servicio);
+            FormatoDatos();
+        } else if (cboServicios.getSelectedIndex() == 2) {
+            servicio = "RL";
+            myEdit.VisualizarData_porDNI(tblDatos, dni,servicio);
+            FormatoDatos();
+        } else if (cboServicios.getSelectedIndex() == 3) {
+            servicio = "VD";
+            myEdit.VisualizarData_porDNI(tblDatos, dni,servicio);
+            FormatoDatos();
+        } else if (cboServicios.getSelectedIndex() == 4) {
+            servicio = "VP";
+            myEdit.VisualizarData_porDNI_2(tblDatos, dni,servicio);
+            FormatoDatos();
+        } else if (cboServicios.getSelectedIndex() == 5) {
+            servicio = "VA";
+            myEdit.VisualizarData_porDNI(tblDatos, dni,servicio);
+            FormatoDatos();
+        } else if (cboServicios.getSelectedIndex() == 6) {
+            servicio = "CT";
+            myEdit.VisualizarData_porDNI(tblDatos, dni,servicio);
+            FormatoDatos();
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void FormatoDatos() {
         tblDatos.getColumnModel().getColumn(0).setMaxWidth(0);
@@ -163,10 +205,12 @@ public class IFrmCambiarEstadoPedido extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cboServicios;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblDesde1;
     private javax.swing.JTable tblDatos;
     private javax.swing.JTextField txtnumeroDocumento;
     // End of variables declaration//GEN-END:variables

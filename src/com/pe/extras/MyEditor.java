@@ -187,7 +187,8 @@ public class MyEditor {
 
     }
 
-    public void VisualizarData_porDNI(JTable tabla, String dni) {
+    public void VisualizarData_porDNI(JTable tabla, String dni, String servicio) {
+        String Validar =servicio;
         tabla.setDefaultRenderer(Object.class, new Render2());
         DefaultTableModel dt = new DefaultTableModel();
         dt.addColumn("ID");
@@ -221,9 +222,10 @@ public class MyEditor {
         daoDetallePedido = new Detalle_PedidoDAO();
         detalle_pedido vo = new detalle_pedido();
 
-        ArrayList<detalle_pedido> list = daoDetallePedido.Busqueda_DNI(dni);
+        ArrayList<detalle_pedido> list = daoDetallePedido.Busqueda_DNI(dni, servicio);
 
-        if (list.size() > 0) {
+        
+      if (list.size() > 0) {
             for (int i = 0; i < list.size(); i++) {
                 Object fila[] = new Object[13];
                 vo = list.get(i);
@@ -246,6 +248,91 @@ public class MyEditor {
             }
             tabla.setModel(dt);
             tabla.setRowHeight(20);
+            Mensajes.msjMuestra("... ! Listo ! ..");
+
+        } else {
+            Mensajes.msjError("No se encontro datos con el siguiente dni: " + dni);
+            dt.addColumn("ID");
+            dt.addColumn("ESTADO DETALLE");
+            dt.addColumn("ESTADO PEDIDO");
+            dt.addColumn("PAQUETE");
+            dt.addColumn("EMPRESA");
+            dt.addColumn("FECHA");
+            dt.addColumn("NUMERO DOCUMENTO");
+            dt.addColumn("POSTULANTE");
+            dt.addColumn("SERVICIO");
+            dt.addColumn("MODALIDAD");
+            dt.addColumn("USUARIO");
+            dt.addColumn("ACTUALIZAR");
+            dt.addColumn("ELIMINAR");
+            tabla.setModel(dt);
+            tabla.setRowHeight(20);
+        }
+    }
+        
+    
+    public void VisualizarData_porDNI_2(JTable tabla, String dni, String servicio) {
+        String Validar =servicio;
+        tabla.setDefaultRenderer(Object.class, new Render2());
+        DefaultTableModel dt = new DefaultTableModel();
+        dt.addColumn("ID");
+        dt.addColumn("ESTADO DETALLE");
+        dt.addColumn("ESTADO PEDIDO");
+        dt.addColumn("PAQUETE");
+        dt.addColumn("EMPRESA");
+        dt.addColumn("FECHA");
+        dt.addColumn("NUMERO DOCUMENTO");
+        dt.addColumn("POSTULANTE");
+        dt.addColumn("SERVICIO");
+        dt.addColumn("MODALIDAD");
+        dt.addColumn("USUARIO");
+        dt.addColumn("ACTUALIZAR");
+        ImageIcon icono_actualizar = new ImageIcon(getClass().getResource("/image/update.png"));
+        JButton btn_actualizar = new JButton();
+        btn_actualizar.setIcon(icono_actualizar);
+        btn_actualizar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btn_actualizar.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
+        btn_actualizar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btn_actualizar.setVerticalTextPosition(javax.swing.SwingConstants.CENTER);
+        dt.addColumn("ELIMINAR");
+        ImageIcon icono_eliminar = new ImageIcon(getClass().getResource("/image/delete.png"));
+        JButton btn_eliminar = new JButton();
+        btn_eliminar.setIcon(icono_eliminar);
+        btn_actualizar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btn_actualizar.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
+        btn_actualizar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btn_actualizar.setVerticalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        daoDetallePedido = new Detalle_PedidoDAO();
+        detalle_pedido vo = new detalle_pedido();
+
+        ArrayList<detalle_pedido> list = daoDetallePedido.Busqueda_DNI_2(dni, servicio);
+
+        
+      if (list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                Object fila[] = new Object[13];
+                vo = list.get(i);
+                SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                fila[0] = vo.getId_detalle_pedido();
+                fila[1] = vo.getId_localidad();
+                fila[2] = vo.getId_tipo_servicio();
+                fila[3] = vo.getNombre_archivo();
+                fila[4] = vo.getApellido_paterno();
+                fila[5] = formateador.format(vo.getFecha_creacion());
+                fila[6] = vo.getNumero_documento();
+                fila[7] = vo.getApellido_materno();
+                fila[8] = vo.getNombres();
+                fila[9] = vo.getModalidad_express();
+                fila[10] = vo.getRegion();
+                fila[11] = btn_actualizar;
+                fila[12] = btn_eliminar;
+                dt.addRow(fila);
+
+            }
+            tabla.setModel(dt);
+            tabla.setRowHeight(20);
+            Mensajes.msjMuestra("... ! Listo ! ..");
 
         } else {
             Mensajes.msjError("No se encontro datos con el siguiente dni: " + dni);
@@ -267,3 +354,4 @@ public class MyEditor {
         }
     }
 }
+

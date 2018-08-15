@@ -650,7 +650,7 @@ public class Detalle_PedidoDAO {
         return rs;
     }
 
-    public static ArrayList<detalle_pedido> Busqueda_DNI(String dni) {
+    public static ArrayList<detalle_pedido> Busqueda_DNI(String dni, String servicio) {
         ArrayList<detalle_pedido> list = new ArrayList<>();
         String sql = "SELECT T.ID,T.ESTADO_DETALLE,T.ESTADO_PEDIDO,ifnull(T.PAQUETE,'') AS PAQUETE,T.EMPRESA,T.FECHA,T.NUMERO_DOCUMENTO,T.POSTULANTE,T.SERVICIO,T.MODALIDAD,\n"
                 + "T.USUARIO FROM(\n"
@@ -661,8 +661,7 @@ public class Detalle_PedidoDAO {
                 + "from detalle_pedido dp \n"
                 + "inner join pedido p on dp.id_pedido=p.id_pedido inner join organizacion o  ON p.id_organizacion=o.id_organizacion inner join usuario u \n"
                 + "ON dp.id_usuario_crea=u.id_usuario inner join detalle_catalogo dc on dc.id_catalogo=6 and dc.codigo=dp.id_tipo_servicio and dp.id_estado in (1,2)\n"
-                + "where dp.numero_documento=?  and dp.razon_social_proveedor is null\n"
-                + "GROUP BY dp.id_detalle_pedido\n"
+                + "where dp.numero_documento=?  and p.id_tipo_pedido=?\n"
                 + "UNION ALL\n"
                 + "select dp.id_detalle_pedido AS ID,dp.id_estado as \"ESTADO_DETALLE\",p.id_estado as \"ESTADO_PEDIDO\",dp.id_paquete_organizacion_solicitud as PAQUETE\n"
                 + ",o.razon_social as EMPRESA,dp.fecha_creacion AS FECHA,\n"
@@ -670,29 +669,17 @@ public class Detalle_PedidoDAO {
                 + ",dc.descripcion_larga as SERVICIO,'NO' AS MODALIDAD,'Pedido Automatico' AS USUARIO\n"
                 + "from detalle_pedido dp\n"
                 + "inner join pedido p on dp.id_estado in (1,2) and dp.id_pedido=p.id_pedido inner join organizacion o on p.id_organizacion=o.id_organizacion \n"
-                + "inner join detalle_catalogo dc on dc.id_catalogo=6 and dc.codigo=dp.id_tipo_servicio and dp.id_usuario_crea=0\n"
-                + "where dp.numero_documento=? \n"
-                + "GROUP BY dp.id_detalle_pedido\n"
-                + "UNION ALL\n"
-                + "select dp.id_detalle_pedido AS ID,dp.id_estado as \"ESTADO_DETALLE\",p.id_estado as \"ESTADO_PEDIDO\",dp.id_paquete_organizacion_solicitud as PAQUETE\n"
-                + ",o.razon_social as EMPRESA,dp.fecha_creacion AS FECHA,\n"
-                + "dp.numero_documento AS \"NUMERO_DOCUMENTO\",dp.razon_social_proveedor POSTULANTE\n"
-                + ",dc.descripcion_larga as SERVICIO,'NO' AS MODALIDAD,u.nombres  AS USUARIO\n"
-                + "from detalle_pedido dp \n"
-                + "inner join pedido p on dp.id_estado in (1,2) AND dp.id_pedido=p.id_pedido inner join organizacion o \n"
-                + "on p.id_organizacion=o.id_organizacion  inner join usuario u on dp.id_usuario_crea=u.id_usuario\n"
-                + "inner join detalle_catalogo dc on\n"
-                + "dc.id_catalogo=6 and dc.codigo=dp.id_tipo_servicio and dp.apellido_paterno is null\n"
-                + "where dp.numero_documento=? \n"
-                + "GROUP BY dp.id_detalle_pedido\n"
+                + "inner join detalle_catalogo dc on dc.id_catalogo=6 and dc.codigo=dp.id_tipo_servicio \n"
+                + "where dp.id_usuario_crea=0 and dp.numero_documento=?  and p.id_tipo_pedido=?\n"
                 + ")T";
         ResultSet rs = null;
         PreparedStatement ps = null;
         try {
             ps = conexion.Conexion().prepareStatement(sql);
             ps.setString(1, dni);
-            ps.setString(2, dni);
+            ps.setString(2, servicio);
             ps.setString(3, dni);
+            ps.setString(4, servicio);
             rs = ps.executeQuery();
             while (rs.next()) {
                 detalle_pedido vo = new detalle_pedido();
@@ -723,57 +710,44 @@ public class Detalle_PedidoDAO {
         return list;
     }
 
-    public Collection<detalle_pedido> Busqueda_DNI_2(String dni) {
+    public static ArrayList<detalle_pedido> Busqueda_DNI_2(String dni, String servicio) {
         ArrayList<detalle_pedido> list = new ArrayList<>();
+        String sql = "SELECT T.ID,T.ESTADO_DETALLE,T.ESTADO_PEDIDO,ifnull(T.PAQUETE,'') AS PAQUETE,T.EMPRESA,T.FECHA,T.NUMERO_DOCUMENTO,T.POSTULANTE,T.SERVICIO,T.MODALIDAD,\n"
+                + "T.USUARIO FROM(\n"
+                + "select dp.id_detalle_pedido AS ID,dp.id_estado as \"ESTADO_DETALLE\",p.id_estado as \"ESTADO_PEDIDO\",dp.id_paquete_organizacion_solicitud as PAQUETE,\n"
+                + "o.razon_social as EMPRESA,dp.fecha_creacion AS FECHA,\n"
+                + "dp.numero_documento AS \"NUMERO_DOCUMENTO\",CONCAT(dp.apellido_paterno,' ',dp.apellido_materno,' ',dp.nombres)as POSTULANTE\n"
+                + ",dc.descripcion_larga as SERVICIO,dp.modalidad_express AS MODALIDAD,u.nombres AS USUARIO\n"
+                + "from detalle_pedido dp \n"
+                + "inner join pedido p on dp.id_estado in (1,2) AND dp.id_pedido=p.id_pedido inner join organizacion o \n"
+                + "on p.id_organizacion=o.id_organizacion  inner join usuario u on dp.id_usuario_crea=u.id_usuario\n"
+                + "inner join detalle_catalogo dc on\n"
+                + "dc.id_catalogo=6 and dc.codigo=dp.id_tipo_servicio \n"
+                + "where dp.numero_documento=?    and p.id_tipo_pedido=?\n"
+                + "UNION ALL\n"
+                + "select dp.id_detalle_pedido AS ID,dp.id_estado as \"ESTADO_DETALLE\",p.id_estado as \"ESTADO_PEDIDO\",dp.id_paquete_organizacion_solicitud as PAQUETE\n"
+                + ",o.razon_social as EMPRESA,dp.fecha_creacion AS FECHA,\n"
+                + "dp.numero_documento AS \"NUMERO_DOCUMENTO\",dp.razon_social_proveedor POSTULANTE\n"
+                + ",dc.descripcion_larga as SERVICIO,'NO' AS MODALIDAD,u.nombres  AS USUARIO\n"
+                + "from detalle_pedido dp \n"
+                + "inner join pedido p on dp.id_estado in (1,2) AND dp.id_pedido=p.id_pedido inner join organizacion o \n"
+                + "on p.id_organizacion=o.id_organizacion  inner join usuario u on dp.id_usuario_crea=u.id_usuario\n"
+                + "inner join detalle_catalogo dc on\n"
+                + "dc.id_catalogo=6 and dc.codigo=dp.id_tipo_servicio and dp.apellido_paterno is null\n"
+                + "where dp.numero_documento=?   and p.id_tipo_pedido=?\n"
+                + ")T\n"
+                + "GROUP BY T.ID";
         ResultSet rs = null;
         PreparedStatement ps = null;
-
         try {
-
-            String sql = "SELECT T.ID,T.ESTADO_DETALLE,T.ESTADO_PEDIDO,T.PAQUETE,T.EMPRESA,T.FECHA,T.NUMERO_DOCUMENTO,T.POSTULANTE,T.SERVICIO,T.MODALIDAD,\n"
-                    + "T.USUARIO FROM(\n"
-                    + "select dp.id_detalle_pedido AS ID,dp.id_estado as \"ESTADO_DETALLE\",p.id_estado as \"ESTADO_PEDIDO\",dp.id_paquete_organizacion_solicitud as PAQUETE,\n"
-                    + "o.razon_social as EMPRESA,dp.fecha_creacion AS FECHA,\n"
-                    + "dp.numero_documento AS \"NUMERO_DOCUMENTO\",CONCAT(dp.apellido_paterno,' ',dp.apellido_materno,' ',dp.nombres)as POSTULANTE\n"
-                    + ",dc.descripcion_larga as SERVICIO,dp.modalidad_express AS MODALIDAD,u.nombres AS USUARIO\n"
-                    + "from detalle_pedido dp \n"
-                    + "inner join pedido p inner join organizacion o inner join usuario u inner join detalle_catalogo dc\n"
-                    + "on dp.id_pedido=p.id_pedido and p.id_organizacion=o.id_organizacion and dp.id_usuario_crea=u.id_usuario and\n"
-                    + "dc.id_catalogo=6 and dc.codigo=dp.id_tipo_servicio and dp.id_estado in (1,2)\n"
-                    + "where dp.numero_documento=?\n"
-                    + "GROUP BY dp.id_detalle_pedido\n"
-                    + "UNION ALL\n"
-                    + "select dp.id_detalle_pedido AS ID,dp.id_estado as \"ESTADO_DETALLE\",p.id_estado as \"ESTADO_PEDIDO\",dp.id_paquete_organizacion_solicitud as PAQUETE\n"
-                    + ",o.razon_social as EMPRESA,dp.fecha_creacion AS FECHA,\n"
-                    + "dp.numero_documento AS \"NUMERO_DOCUMENTO\",CONCAT(dp.apellido_paterno,' ',dp.apellido_materno,' ',dp.nombres)as POSTULANTE\n"
-                    + ",dc.descripcion_larga as SERVICIO,'NO' AS MODALIDAD,'Pedido Automatico' AS USUARIO\n"
-                    + "from detalle_pedido dp \n"
-                    + "inner join pedido p inner join organizacion o inner join usuario u inner join detalle_catalogo dc\n"
-                    + "on dp.id_estado in (1,2) AND dp.id_pedido=p.id_pedido and p.id_organizacion=o.id_organizacion  and\n"
-                    + "dc.id_catalogo=6 and dc.codigo=dp.id_tipo_servicio and dp.id_usuario_crea=0\n"
-                    + "where dp.numero_documento=?\n"
-                    + "GROUP BY dp.id_detalle_pedido\n"
-                    + "UNION ALL\n"
-                    + "select dp.id_detalle_pedido AS ID,dp.id_estado as \"ESTADO_DETALLE\",p.id_estado as \"ESTADO_PEDIDO\",dp.id_paquete_organizacion_solicitud as PAQUETE\n"
-                    + ",o.razon_social as EMPRESA,dp.fecha_creacion AS FECHA,\n"
-                    + "dp.numero_documento AS \"NUMERO_DOCUMENTO\",dp.razon_social_proveedor POSTULANTE\n"
-                    + ",dc.descripcion_larga as SERVICIO,'NO' AS MODALIDAD,u.nombres  AS USUARIO\n"
-                    + "from detalle_pedido dp \n"
-                    + "inner join pedido p inner join organizacion o inner join usuario u inner join detalle_catalogo dc\n"
-                    + "on dp.id_estado in (1,2) AND dp.id_pedido=p.id_pedido and p.id_organizacion=o.id_organizacion  and\n"
-                    + "dc.id_catalogo=6 and dc.codigo=dp.id_tipo_servicio and dp.apellido_paterno is null\n"
-                    + "where dp.numero_documento=?\n"
-                    + "GROUP BY dp.id_detalle_pedido\n"
-                    + ")T";
             ps = conexion.Conexion().prepareStatement(sql);
             ps.setString(1, dni);
-            ps.setString(2, dni);
+            ps.setString(2, servicio);
             ps.setString(3, dni);
+            ps.setString(4, servicio);
             rs = ps.executeQuery();
-
             while (rs.next()) {
                 detalle_pedido vo = new detalle_pedido();
-
                 vo.setId_detalle_pedido(rs.getInt("ID"));
                 vo.setId_localidad(rs.getString("ESTADO_DETALLE"));
                 vo.setId_tipo_servicio(rs.getString("ESTADO_PEDIDO"));
@@ -788,8 +762,15 @@ public class Detalle_PedidoDAO {
                 vo.setRegion(rs.getString("USUARIO"));
                 list.add(vo);
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e.toString());
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        } finally {
+            try {
+                rs.close();
+            } catch (Exception ex) {
+            }
         }
         return list;
     }
