@@ -193,6 +193,7 @@ public class MyEditor {
         DefaultTableModel dt = new DefaultTableModel();
         dt.addColumn("ID");
         dt.addColumn("ESTADO DETALLE");
+        dt.addColumn("ID PEDIDO");
         dt.addColumn("ESTADO PEDIDO");
         dt.addColumn("PAQUETE");
         dt.addColumn("EMPRESA");
@@ -206,6 +207,7 @@ public class MyEditor {
         ImageIcon icono_actualizar = new ImageIcon(getClass().getResource("/image/update.png"));
         JButton btn_actualizar = new JButton();
         btn_actualizar.setIcon(icono_actualizar);
+        btn_actualizar.setName("btnactualizar");
         btn_actualizar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btn_actualizar.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
         btn_actualizar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -214,10 +216,11 @@ public class MyEditor {
         ImageIcon icono_eliminar = new ImageIcon(getClass().getResource("/image/delete.png"));
         JButton btn_eliminar = new JButton();
         btn_eliminar.setIcon(icono_eliminar);
-        btn_actualizar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btn_actualizar.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
-        btn_actualizar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        btn_actualizar.setVerticalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_eliminar.setName("btneliminar");
+        btn_eliminar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btn_eliminar.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
+        btn_eliminar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btn_eliminar.setVerticalTextPosition(javax.swing.SwingConstants.CENTER);
 
         daoDetallePedido = new Detalle_PedidoDAO();
         detalle_pedido vo = new detalle_pedido();
@@ -227,22 +230,23 @@ public class MyEditor {
         
       if (list.size() > 0) {
             for (int i = 0; i < list.size(); i++) {
-                Object fila[] = new Object[13];
+                Object fila[] = new Object[14];
                 vo = list.get(i);
                 SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                 fila[0] = vo.getId_detalle_pedido();
                 fila[1] = vo.getId_localidad();
-                fila[2] = vo.getId_tipo_servicio();
-                fila[3] = vo.getNombre_archivo();
-                fila[4] = vo.getApellido_paterno();
-                fila[5] = formateador.format(vo.getFecha_creacion());
-                fila[6] = vo.getNumero_documento();
-                fila[7] = vo.getApellido_materno();
-                fila[8] = vo.getNombres();
-                fila[9] = vo.getModalidad_express();
-                fila[10] = vo.getRegion();
-                fila[11] = btn_actualizar;
-                fila[12] = btn_eliminar;
+                fila[2] = vo.getId_pedido();
+                fila[3] = vo.getId_tipo_servicio();
+                fila[4] = vo.getNombre_archivo();
+                fila[5] = vo.getApellido_paterno();
+                fila[6] = formateador.format(vo.getFecha_creacion());
+                fila[7] = vo.getNumero_documento();
+                fila[8] = vo.getApellido_materno();
+                fila[9] = vo.getNombres();
+                fila[10] = vo.getModalidad_express();
+                fila[11] = vo.getRegion();
+                fila[12] = btn_actualizar;
+                fila[13] = btn_eliminar;
                 dt.addRow(fila);
 
             }
@@ -254,6 +258,7 @@ public class MyEditor {
             Mensajes.msjError("No se encontro datos con el siguiente dni: " + dni);
             dt.addColumn("ID");
             dt.addColumn("ESTADO DETALLE");
+            dt.addColumn("ID PEDIDO");
             dt.addColumn("ESTADO PEDIDO");
             dt.addColumn("PAQUETE");
             dt.addColumn("EMPRESA");
@@ -277,6 +282,7 @@ public class MyEditor {
         DefaultTableModel dt = new DefaultTableModel();
         dt.addColumn("ID");
         dt.addColumn("ESTADO DETALLE");
+        dt.addColumn("ID PEDIDO");
         dt.addColumn("ESTADO PEDIDO");
         dt.addColumn("PAQUETE");
         dt.addColumn("EMPRESA");
@@ -311,22 +317,23 @@ public class MyEditor {
         
       if (list.size() > 0) {
             for (int i = 0; i < list.size(); i++) {
-                Object fila[] = new Object[13];
+                Object fila[] = new Object[14];
                 vo = list.get(i);
                 SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                 fila[0] = vo.getId_detalle_pedido();
                 fila[1] = vo.getId_localidad();
-                fila[2] = vo.getId_tipo_servicio();
-                fila[3] = vo.getNombre_archivo();
-                fila[4] = vo.getApellido_paterno();
-                fila[5] = formateador.format(vo.getFecha_creacion());
-                fila[6] = vo.getNumero_documento();
-                fila[7] = vo.getApellido_materno();
-                fila[8] = vo.getNombres();
-                fila[9] = vo.getModalidad_express();
-                fila[10] = vo.getRegion();
-                fila[11] = btn_actualizar;
-                fila[12] = btn_eliminar;
+                fila[2] = vo.getId_pedido();
+                fila[3] = vo.getId_tipo_servicio();
+                fila[4] = vo.getNombre_archivo();
+                fila[5] = vo.getApellido_paterno();
+                fila[6] = formateador.format(vo.getFecha_creacion());
+                fila[7] = vo.getNumero_documento();
+                fila[8] = vo.getApellido_materno();
+                fila[9] = vo.getNombres();
+                fila[10] = vo.getModalidad_express();
+                fila[11] = vo.getRegion();
+                fila[12] = btn_actualizar;
+                fila[13] = btn_eliminar;
                 dt.addRow(fila);
 
             }
@@ -338,6 +345,7 @@ public class MyEditor {
             Mensajes.msjError("No se encontro datos con el siguiente dni: " + dni);
             dt.addColumn("ID");
             dt.addColumn("ESTADO DETALLE");
+            dt.addColumn("ID PEDIDO");
             dt.addColumn("ESTADO PEDIDO");
             dt.addColumn("PAQUETE");
             dt.addColumn("EMPRESA");

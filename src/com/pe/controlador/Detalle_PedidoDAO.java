@@ -652,9 +652,9 @@ public class Detalle_PedidoDAO {
 
     public static ArrayList<detalle_pedido> Busqueda_DNI(String dni, String servicio) {
         ArrayList<detalle_pedido> list = new ArrayList<>();
-        String sql = "SELECT T.ID,T.ESTADO_DETALLE,T.ESTADO_PEDIDO,ifnull(T.PAQUETE,'') AS PAQUETE,T.EMPRESA,T.FECHA,T.NUMERO_DOCUMENTO,T.POSTULANTE,T.SERVICIO,T.MODALIDAD,\n"
+        String sql = "SELECT T.ID,T.ESTADO_DETALLE,T.ID_PEDIDO,T.ESTADO_PEDIDO,ifnull(T.PAQUETE,'') AS PAQUETE,T.EMPRESA,T.FECHA,T.NUMERO_DOCUMENTO,T.POSTULANTE,T.SERVICIO,T.MODALIDAD,\n"
                 + "T.USUARIO FROM(\n"
-                + "select dp.id_detalle_pedido AS ID,dp.id_estado as \"ESTADO_DETALLE\",p.id_estado as \"ESTADO_PEDIDO\",dp.id_paquete_organizacion_solicitud as PAQUETE,\n"
+                + "select dp.id_detalle_pedido AS ID,dp.id_estado as \"ESTADO_DETALLE\",p.id_pedido AS ID_PEDIDO,p.id_estado as \"ESTADO_PEDIDO\",dp.id_paquete_organizacion_solicitud as PAQUETE,\n"
                 + "o.razon_social as EMPRESA,dp.fecha_creacion AS FECHA,\n"
                 + "dp.numero_documento AS \"NUMERO_DOCUMENTO\",CONCAT(dp.apellido_paterno,' ',dp.apellido_materno,' ',dp.nombres)as POSTULANTE\n"
                 + ",dc.descripcion_larga as SERVICIO,dp.modalidad_express AS MODALIDAD,u.nombres AS USUARIO\n"
@@ -663,7 +663,7 @@ public class Detalle_PedidoDAO {
                 + "ON dp.id_usuario_crea=u.id_usuario inner join detalle_catalogo dc on dc.id_catalogo=6 and dc.codigo=dp.id_tipo_servicio and dp.id_estado in (1,2)\n"
                 + "where dp.numero_documento=?  and p.id_tipo_pedido=?\n"
                 + "UNION ALL\n"
-                + "select dp.id_detalle_pedido AS ID,dp.id_estado as \"ESTADO_DETALLE\",p.id_estado as \"ESTADO_PEDIDO\",dp.id_paquete_organizacion_solicitud as PAQUETE\n"
+                + "select dp.id_detalle_pedido AS ID,dp.id_estado as \"ESTADO_DETALLE\",p.id_pedido AS ID_PEDIDO,p.id_estado as \"ESTADO_PEDIDO\",dp.id_paquete_organizacion_solicitud as PAQUETE\n"
                 + ",o.razon_social as EMPRESA,dp.fecha_creacion AS FECHA,\n"
                 + "dp.numero_documento AS \"NUMERO_DOCUMENTO\",CONCAT(dp.apellido_paterno,' ',dp.apellido_materno,' ',dp.nombres)as POSTULANTE\n"
                 + ",dc.descripcion_larga as SERVICIO,'NO' AS MODALIDAD,'Pedido Automatico' AS USUARIO\n"
@@ -685,6 +685,7 @@ public class Detalle_PedidoDAO {
                 detalle_pedido vo = new detalle_pedido();
                 vo.setId_detalle_pedido(rs.getInt("ID"));
                 vo.setId_localidad(rs.getString("ESTADO_DETALLE"));
+                vo.setId_pedido(rs.getInt("ID_PEDIDO"));
                 vo.setId_tipo_servicio(rs.getString("ESTADO_PEDIDO"));
                 vo.setNombre_archivo(rs.getString("PAQUETE"));
                 vo.setApellido_paterno(rs.getString("EMPRESA"));
@@ -712,20 +713,9 @@ public class Detalle_PedidoDAO {
 
     public static ArrayList<detalle_pedido> Busqueda_DNI_2(String dni, String servicio) {
         ArrayList<detalle_pedido> list = new ArrayList<>();
-        String sql = "SELECT T.ID,T.ESTADO_DETALLE,T.ESTADO_PEDIDO,ifnull(T.PAQUETE,'') AS PAQUETE,T.EMPRESA,T.FECHA,T.NUMERO_DOCUMENTO,T.POSTULANTE,T.SERVICIO,T.MODALIDAD,\n"
+        String sql = "SELECT T.ID,T.ESTADO_DETALLE,T.ID_PEDIDO,T.ESTADO_PEDIDO,ifnull(T.PAQUETE,'') AS PAQUETE,T.EMPRESA,T.FECHA,T.NUMERO_DOCUMENTO,T.POSTULANTE,T.SERVICIO,T.MODALIDAD,\n"
                 + "T.USUARIO FROM(\n"
-                + "select dp.id_detalle_pedido AS ID,dp.id_estado as \"ESTADO_DETALLE\",p.id_estado as \"ESTADO_PEDIDO\",dp.id_paquete_organizacion_solicitud as PAQUETE,\n"
-                + "o.razon_social as EMPRESA,dp.fecha_creacion AS FECHA,\n"
-                + "dp.numero_documento AS \"NUMERO_DOCUMENTO\",CONCAT(dp.apellido_paterno,' ',dp.apellido_materno,' ',dp.nombres)as POSTULANTE\n"
-                + ",dc.descripcion_larga as SERVICIO,dp.modalidad_express AS MODALIDAD,u.nombres AS USUARIO\n"
-                + "from detalle_pedido dp \n"
-                + "inner join pedido p on dp.id_estado in (1,2) AND dp.id_pedido=p.id_pedido inner join organizacion o \n"
-                + "on p.id_organizacion=o.id_organizacion  inner join usuario u on dp.id_usuario_crea=u.id_usuario\n"
-                + "inner join detalle_catalogo dc on\n"
-                + "dc.id_catalogo=6 and dc.codigo=dp.id_tipo_servicio \n"
-                + "where dp.numero_documento=?    and p.id_tipo_pedido=?\n"
-                + "UNION ALL\n"
-                + "select dp.id_detalle_pedido AS ID,dp.id_estado as \"ESTADO_DETALLE\",p.id_estado as \"ESTADO_PEDIDO\",dp.id_paquete_organizacion_solicitud as PAQUETE\n"
+                + "select dp.id_detalle_pedido AS ID,dp.id_estado as \"ESTADO_DETALLE\",p.id_pedido AS ID_PEDIDO,p.id_estado as \"ESTADO_PEDIDO\",dp.id_paquete_organizacion_solicitud as PAQUETE\n"
                 + ",o.razon_social as EMPRESA,dp.fecha_creacion AS FECHA,\n"
                 + "dp.numero_documento AS \"NUMERO_DOCUMENTO\",dp.razon_social_proveedor POSTULANTE\n"
                 + ",dc.descripcion_larga as SERVICIO,'NO' AS MODALIDAD,u.nombres  AS USUARIO\n"
@@ -734,7 +724,18 @@ public class Detalle_PedidoDAO {
                 + "on p.id_organizacion=o.id_organizacion  inner join usuario u on dp.id_usuario_crea=u.id_usuario\n"
                 + "inner join detalle_catalogo dc on\n"
                 + "dc.id_catalogo=6 and dc.codigo=dp.id_tipo_servicio and dp.apellido_paterno is null\n"
-                + "where dp.numero_documento=?   and p.id_tipo_pedido=?\n"
+                + "where dp.numero_documento=? and p.id_tipo_pedido=?\n"
+                + "UNION ALL\n"
+                + "select dp.id_detalle_pedido AS ID,dp.id_estado as \"ESTADO_DETALLE\",p.id_pedido AS ID_PEDIDO,p.id_estado as \"ESTADO_PEDIDO\",dp.id_paquete_organizacion_solicitud as PAQUETE,\n"
+                + "o.razon_social as EMPRESA,dp.fecha_creacion AS FECHA,\n"
+                + "dp.numero_documento AS \"NUMERO_DOCUMENTO\",CONCAT(dp.apellido_paterno,' ',dp.apellido_materno,' ',dp.nombres)as POSTULANTE\n"
+                + ",dc.descripcion_larga as SERVICIO,dp.modalidad_express AS MODALIDAD,u.nombres AS USUARIO\n"
+                + "from detalle_pedido dp \n"
+                + "inner join pedido p on dp.id_estado in (1,2) AND dp.id_pedido=p.id_pedido inner join organizacion o \n"
+                + "on p.id_organizacion=o.id_organizacion  inner join usuario u on dp.id_usuario_crea=u.id_usuario\n"
+                + "inner join detalle_catalogo dc on\n"
+                + "dc.id_catalogo=6 and dc.codigo=dp.id_tipo_servicio \n"
+                + "where dp.numero_documento=? and p.id_tipo_pedido=?\n"
                 + ")T\n"
                 + "GROUP BY T.ID";
         ResultSet rs = null;
@@ -750,6 +751,7 @@ public class Detalle_PedidoDAO {
                 detalle_pedido vo = new detalle_pedido();
                 vo.setId_detalle_pedido(rs.getInt("ID"));
                 vo.setId_localidad(rs.getString("ESTADO_DETALLE"));
+                vo.setId_pedido(rs.getInt("ID_PEDIDO"));
                 vo.setId_tipo_servicio(rs.getString("ESTADO_PEDIDO"));
                 vo.setNombre_archivo(rs.getString("PAQUETE"));
                 vo.setApellido_paterno(rs.getString("EMPRESA"));
@@ -775,4 +777,70 @@ public class Detalle_PedidoDAO {
         return list;
     }
 
+    public void actualizarPedido(String idDetallePedido, String idPedido) {
+        String sql = "update detalle_pedido dp inner join pedido p\n"
+                + "on(dp.id_pedido=p.id_pedido)\n"
+                + "set dp.id_estado='1' , p.id_estado='1'\n"
+                + "where dp.id_detalle_pedido=?  and p.id_pedido=?";
+        PreparedStatement ps = null;
+        try {
+            ps = conexion.Conexion().prepareStatement(sql);
+            ps.setString(1, idDetallePedido);
+            ps.setString(2, idPedido);
+            int actualizar = ps.executeUpdate();
+            if (actualizar > 0) {
+                Mensajes.msjMuestra("Pedido actualizado");
+            } else {
+                Mensajes.msjError("Error al actualizar Pedido");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.toString(), "Mensaje", JOptionPane.ERROR_MESSAGE);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void eliminarPedido(String idDetallePedido, String idPedido, String paquete) {
+        
+         ArrayList<detalle_pedido> list = new ArrayList<>();
+        String sql = "SELECT SUM(T.PENDIENTE) AS PENDIENTE,SUM(T.ENTREGADOS) AS ENTREGADOS,SUM(T.TOTAL) AS TOTAL \n"
+                + "FROM(\n"
+                + "SELECT COUNT(*)as PENDIENTE,0 AS ENTREGADOS,COUNT(*) AS TOTAL FROM detalle_pedido dp where dp.id_pedido=?\n"
+                + "AND dp.id_estado=1\n"
+                + "UNION ALL\n"
+                + "SELECT 0 as PENDIENTE,COUNT(*) AS ENTREGADOS,COUNT(*) AS TOTAL FROM detalle_pedido dp where dp.id_pedido=?\n"
+                + "AND dp.id_estado=2)T";
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        detalle_pedido vo = new detalle_pedido();
+        
+        try {
+            ps = conexion.Conexion().prepareStatement(sql);
+            ps.setString(1, idPedido);
+            rs = ps.executeQuery();
+            while (rs.next()) {                
+                vo.setId_detalle_pedido(rs.getInt("PENDIENTE"));
+                vo.setId_pedido(rs.getInt("ENTREGADOS"));
+                vo.setId_usuario_asignado(rs.getInt("TOTAL"));
+                list.add(vo);
+            }
+            
+            if (vo.getId_detalle_pedido() >= 1) {
+                // SI HAY MAS DE UN PENDIENTE SE VERA SI HAY PAQUETE O NO
+                // lo primero se cambia el estado a 3 al detalle_pedido
+                Mensajes.msjMuestra("aqui se cambia de estado al detalle_pedido");                
+            }
+            if (paquete != null) {
+                    // si hay numero de paquete se agrega 1 mas y se pone como aprobado
+                    Mensajes.msjMuestra("Aqui ses aumenta 1 al paquete");
+                }
+            if(vo.getId_pedido()+1==vo.getId_usuario_asignado()){
+                // se valida que todos los pedidos ya fueron entregados o que es el unico pedido pendiente
+                // por tal caso se elimina el detalle_pedido y el pedido
+                Mensajes.msjMuestra("Aqui se elimina el detalle pedido y el pedido");
+            }
+           
+        } catch (Exception e) {
+        }
+
+    }
 }

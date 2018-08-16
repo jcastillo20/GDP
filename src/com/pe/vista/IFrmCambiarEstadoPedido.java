@@ -12,6 +12,7 @@ import com.pe.modelo.detalle_pedido;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import net.proteanit.sql.DbUtils;
@@ -26,6 +27,7 @@ public class IFrmCambiarEstadoPedido extends javax.swing.JInternalFrame {
      * Creates new form IFrmCambiarEstadoPedido
      */
     String servicio;
+    int clic_tabla = 0;
 
     public IFrmCambiarEstadoPedido() {
         initComponents();
@@ -78,6 +80,11 @@ public class IFrmCambiarEstadoPedido extends javax.swing.JInternalFrame {
 
             }
         ));
+        tblDatos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDatosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblDatos);
 
         jButton1.setText("Buscar");
@@ -148,30 +155,57 @@ public class IFrmCambiarEstadoPedido extends javax.swing.JInternalFrame {
             Mensajes.msjMuestra("Seleccione un Servicio");
         } else if (cboServicios.getSelectedIndex() == 1) {
             servicio = "RR";
-            myEdit.VisualizarData_porDNI(tblDatos, dni,servicio);
+            myEdit.VisualizarData_porDNI(tblDatos, dni, servicio);
             FormatoDatos();
         } else if (cboServicios.getSelectedIndex() == 2) {
             servicio = "RL";
-            myEdit.VisualizarData_porDNI(tblDatos, dni,servicio);
+            myEdit.VisualizarData_porDNI(tblDatos, dni, servicio);
             FormatoDatos();
         } else if (cboServicios.getSelectedIndex() == 3) {
             servicio = "VD";
-            myEdit.VisualizarData_porDNI(tblDatos, dni,servicio);
+            myEdit.VisualizarData_porDNI(tblDatos, dni, servicio);
             FormatoDatos();
         } else if (cboServicios.getSelectedIndex() == 4) {
             servicio = "VP";
-            myEdit.VisualizarData_porDNI_2(tblDatos, dni,servicio);
+            myEdit.VisualizarData_porDNI_2(tblDatos, dni, servicio);
             FormatoDatos();
         } else if (cboServicios.getSelectedIndex() == 5) {
             servicio = "VA";
-            myEdit.VisualizarData_porDNI(tblDatos, dni,servicio);
+            myEdit.VisualizarData_porDNI(tblDatos, dni, servicio);
             FormatoDatos();
         } else if (cboServicios.getSelectedIndex() == 6) {
             servicio = "CT";
-            myEdit.VisualizarData_porDNI(tblDatos, dni,servicio);
+            myEdit.VisualizarData_porDNI(tblDatos, dni, servicio);
             FormatoDatos();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void tblDatosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDatosMouseClicked
+        // TODO add your handling code here:
+        clic_tabla = this.tblDatos.rowAtPoint(evt.getPoint());
+        int filaseleccionada = tblDatos.getSelectedRow();
+        int columna = tblDatos.getColumnModel().getColumnIndexAtX(evt.getX());
+        int row = evt.getY() / tblDatos.getRowHeight();
+        String idDetallePedido = "" + tblDatos.getValueAt(filaseleccionada, 0);
+        String idPedido = "" + tblDatos.getValueAt(filaseleccionada, 2);
+        String fecha=""+tblDatos.getValueAt(filaseleccionada, 6);
+        String paquete=""+tblDatos.getValueAt(filaseleccionada, 4);
+        Object value = tblDatos.getValueAt(row, columna);
+        if (value instanceof JButton) {
+            ((JButton) value).doClick();
+            JButton boton = (JButton) value;
+
+            if (boton.getName().equals("btnactualizar")) {
+                System.out.println("Click en el boton actualizar");
+                Mensajes.msjconfirmacionActualizarPedido(fecha, idDetallePedido, idPedido);
+            }
+             if (boton.getName().equals("btneliminar")) {
+                System.out.println("Click en el boton Eliminar");
+                Mensajes.msjconfirmacionEliminarPedido(fecha, idDetallePedido, idPedido,paquete);
+            }
+        }
+
+    }//GEN-LAST:event_tblDatosMouseClicked
 
     private void FormatoDatos() {
         tblDatos.getColumnModel().getColumn(0).setMaxWidth(0);
@@ -190,20 +224,23 @@ public class IFrmCambiarEstadoPedido extends javax.swing.JInternalFrame {
         tblDatos.getColumnModel().getColumn(3).setMinWidth(0);
         tblDatos.getTableHeader().getColumnModel().getColumn(3).setMaxWidth(0);
         tblDatos.getTableHeader().getColumnModel().getColumn(3).setMinWidth(0);
-        tblDatos.getColumnModel().getColumn(4).setPreferredWidth(200);
-        tblDatos.getColumnModel().getColumn(5).setPreferredWidth(125);
-        tblDatos.getColumnModel().getColumn(6).setPreferredWidth(100);
-        tblDatos.getColumnModel().getColumn(7).setPreferredWidth(250);
-        tblDatos.getColumnModel().getColumn(8).setPreferredWidth(100);
-        tblDatos.getColumnModel().getColumn(9).setPreferredWidth(110);
-        tblDatos.getColumnModel().getColumn(10).setPreferredWidth(250);
+        tblDatos.getColumnModel().getColumn(4).setMaxWidth(0);
+        tblDatos.getColumnModel().getColumn(4).setMinWidth(0);
+        tblDatos.getTableHeader().getColumnModel().getColumn(4).setMaxWidth(0);
+        tblDatos.getTableHeader().getColumnModel().getColumn(4).setMinWidth(0);
+        tblDatos.getColumnModel().getColumn(5).setPreferredWidth(200);
+        tblDatos.getColumnModel().getColumn(6).setPreferredWidth(125);
+        tblDatos.getColumnModel().getColumn(7).setPreferredWidth(100);
+        tblDatos.getColumnModel().getColumn(8).setPreferredWidth(250);
+        tblDatos.getColumnModel().getColumn(9).setPreferredWidth(100);
+        tblDatos.getColumnModel().getColumn(10).setPreferredWidth(110);
+        tblDatos.getColumnModel().getColumn(11).setPreferredWidth(250);
         tblDatos.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         tblDatos.setSelectionBackground(Color.GRAY);
         tblDatos.setIntercellSpacing(new Dimension(1, 1));
         tblDatos.setRowMargin(1);
         tblDatos.setOpaque(false);
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cboServicios;
     private javax.swing.JButton jButton1;

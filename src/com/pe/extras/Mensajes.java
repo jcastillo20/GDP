@@ -5,6 +5,7 @@
  */
 package com.pe.extras;
 
+import com.pe.controlador.Detalle_PedidoDAO;
 import com.pe.util.conexion;
 import com.pe.vista.*;
 import java.awt.Component;
@@ -43,6 +44,30 @@ public class Mensajes {
         }
     }
     
+    public static void msjconfirmacionActualizarPedido(String fecha,String idDetallePedido,String idPedido){
+        Detalle_PedidoDAO dao=new Detalle_PedidoDAO();
+        String title="Actualizar el envio";
+        String message="¿ Desea actualizar el pedido de la siguiente fecha - "+fecha+" ?";
+        int rpta=JOptionPane.showConfirmDialog(null, message,title,JOptionPane.YES_NO_OPTION);
+        if(rpta==JOptionPane.YES_OPTION){
+            //msjMuestra(fecha +"-"+idDetallePedido+"-"+idPedido);
+            dao.actualizarPedido(idDetallePedido, idPedido);
+        }else{
+            msjMuestra("Accion cancelada");
+        }
+    }
+     public static void msjconfirmacionEliminarPedido(String fecha,String idDetallePedido,String idPedido,String idPaquete){
+        Detalle_PedidoDAO dao=new Detalle_PedidoDAO();
+        String title="Eliminar Reporte";
+        String message="¿ Desea Eliminar el pedido de la siguiente fecha - "+fecha+" ?";
+        int rpta=JOptionPane.showConfirmDialog(null, message,title,JOptionPane.YES_NO_OPTION);
+        if(rpta==JOptionPane.YES_OPTION){
+            //msjMuestra(fecha +"-"+idDetallePedido+"-"+idPedido);
+            dao.eliminarPedido(idDetallePedido, idPedido,idPaquete);
+        }else{
+            msjMuestra("Accion cancelada");
+        }
+    }
      public static void msjVerDetalle_Paquete(){
         FrmPrincipal principal=null;
         String title="Detalle Paquete";
