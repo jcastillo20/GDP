@@ -57,13 +57,14 @@ public class Mensajes {
         }
     }
      public static void msjconfirmacionEliminarPedido(String fecha,String idDetallePedido,String idPedido,String idPaquete){
-        Detalle_PedidoDAO dao=new Detalle_PedidoDAO();
+         
+         Detalle_PedidoDAO dao=new Detalle_PedidoDAO();
         String title="Eliminar Reporte";
         String message="¿ Desea Eliminar el pedido de la siguiente fecha - "+fecha+" ?";
         int rpta=JOptionPane.showConfirmDialog(null, message,title,JOptionPane.YES_NO_OPTION);
         if(rpta==JOptionPane.YES_OPTION){
             //msjMuestra(fecha +"-"+idDetallePedido+"-"+idPedido);
-            dao.eliminarPedido(idDetallePedido, idPedido,idPaquete);
+            dao.eliminarPedido(idDetallePedido, idPedido, idPaquete);
         }else{
             msjMuestra("Accion cancelada");
         }

@@ -800,8 +800,8 @@ public class Detalle_PedidoDAO {
     }
 
     public void eliminarPedido(String idDetallePedido, String idPedido, String paquete) {
-        
-         ArrayList<detalle_pedido> list = new ArrayList<>();
+
+        ArrayList<detalle_pedido> list = new ArrayList<>();
         String sql = "SELECT SUM(T.PENDIENTE) AS PENDIENTE,SUM(T.ENTREGADOS) AS ENTREGADOS,SUM(T.TOTAL) AS TOTAL \n"
                 + "FROM(\n"
                 + "SELECT COUNT(*)as PENDIENTE,0 AS ENTREGADOS,COUNT(*) AS TOTAL FROM detalle_pedido dp where dp.id_pedido=?\n"
@@ -809,38 +809,96 @@ public class Detalle_PedidoDAO {
                 + "UNION ALL\n"
                 + "SELECT 0 as PENDIENTE,COUNT(*) AS ENTREGADOS,COUNT(*) AS TOTAL FROM detalle_pedido dp where dp.id_pedido=?\n"
                 + "AND dp.id_estado=2)T";
-        ResultSet rs = null;
-        PreparedStatement ps = null;
+        ResultSet rs = null;;
         detalle_pedido vo = new detalle_pedido();
-        
         try {
-            ps = conexion.Conexion().prepareStatement(sql);
+            PreparedStatement ps = conexion.Conexion().prepareStatement(sql);
             ps.setString(1, idPedido);
+            ps.setString(2, idPedido);
             rs = ps.executeQuery();
-            while (rs.next()) {                
-                vo.setId_detalle_pedido(rs.getInt("PENDIENTE"));
-                vo.setId_pedido(rs.getInt("ENTREGADOS"));
-                vo.setId_usuario_asignado(rs.getInt("TOTAL"));
-                list.add(vo);
-            }
-            
-            if (vo.getId_detalle_pedido() >= 1) {
-                // SI HAY MAS DE UN PENDIENTE SE VERA SI HAY PAQUETE O NO
-                // lo primero se cambia el estado a 3 al detalle_pedido
-                Mensajes.msjMuestra("aqui se cambia de estado al detalle_pedido");                
-            }
-            if (paquete != null) {
-                    // si hay numero de paquete se agrega 1 mas y se pone como aprobado
-                    Mensajes.msjMuestra("Aqui ses aumenta 1 al paquete");
+
+            if (rs.next()) {
+                System.out.println("Paso 1");
+
+                if (!rs.getObject(1).equals(1)) {
+                    // SI HAY MAS DE UN PENDIENTE SE VERA SI HAY PAQUETE O NO
+                    // lo primero se cambia el estado a 3 al detalle_pedido
+                    System.out.println("aqui se cambia de estado al detalle_pedido" + rs.getObject(1));
+                    this.EliminarDetallePedido(idDetallePedido);
                 }
-            if(vo.getId_pedido()+1==vo.getId_usuario_asignado()){
-                // se valida que todos los pedidos ya fueron entregados o que es el unico pedido pendiente
-                // por tal caso se elimina el detalle_pedido y el pedido
-                Mensajes.msjMuestra("Aqui se elimina el detalle pedido y el pedido");
+                if (paquete != null ) {
+                    // si hay numero de paquete se agrega 1 mas y se pone como aprobado
+                    System.out.println("Aqui ses aumenta 1 al paquete" + paquete);
+                    this.AumentarPaquete(paquete);
+                }
+
+                if (rs.getInt(2) + 1 == rs.getInt(3)) {
+                    // se valida que todos los pedidos ya fueron entregados o que es el unico pedido pendiente
+                    // por tal caso se elimina el detalle_pedido y el pedido
+                    System.out.println("Aqui se elimina el detalle pedido y el pedido pasa a entregado" + idPedido);
+                    this.PedidoEntregado(idPedido);
+                }
+                if (rs.getInt(1) == rs.getInt(3)) {
+                    // se valida que todos los pedidos ya fueron entregados o que es el unico pedido pendiente
+                    // por tal caso se elimina el detalle_pedido y el pedido
+                    System.out.println("" + idPedido);
+                    this.CancelarPedido(idPedido);
+                }
             }
-           
+
         } catch (Exception e) {
         }
 
+    }
+
+    public void EliminarDetallePedido(String iddetallePedido) {
+        String sql = "update detalle_pedido dp\n"
+                + "set dp.id_estado='3',dp.id_paquete_organizacion_solicitud=null\n"
+                + "where dp.id_detalle_pedido=?";
+        try {
+            PreparedStatement ps = conexion.Conexion().prepareStatement(sql);
+            ps.setString(1, iddetallePedido);
+            ps.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+
+    public void AumentarPaquete(String idpaquete) {
+        String sql = "update paquete_organizacion_solicitud pos\n"
+                + "set pos.consultas_disponible=pos.consultas_disponible+1\n"
+                + "where pos.id_paquete_organizacion_solicitud=?";
+        try {
+            PreparedStatement ps = conexion.Conexion().prepareStatement(sql);
+            ps.setString(1, idpaquete);
+            ps.executeUpdate();
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void PedidoEntregado(String idpedido) {
+        String sql = "update pedido p\n"
+                + "set p.id_estado='2'\n"
+                + "where p.id_pedido=?";
+        try {
+            PreparedStatement ps = conexion.Conexion().prepareStatement(sql);
+            ps.setString(1, idpedido);
+            ps.executeUpdate();
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void CancelarPedido(String idpedido) {
+        String sql = "update pedido p\n"
+                + "set p.id_estado='5'\n"
+                + "where p.id_pedido=?";
+        try {
+            PreparedStatement ps = conexion.Conexion().prepareStatement(sql);
+            ps.setString(1, idpedido);
+            ps.executeUpdate();
+        } catch (Exception e) {
+
+        }
     }
 }
