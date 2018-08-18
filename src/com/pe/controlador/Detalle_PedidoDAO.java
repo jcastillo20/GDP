@@ -652,7 +652,7 @@ public class Detalle_PedidoDAO {
 
     public static ArrayList<detalle_pedido> Busqueda_DNI(String dni, String servicio) {
         ArrayList<detalle_pedido> list = new ArrayList<>();
-        String sql = "SELECT T.ID,T.ESTADO_DETALLE,T.ID_PEDIDO,T.ESTADO_PEDIDO,ifnull(T.PAQUETE,'') AS PAQUETE,T.EMPRESA,T.FECHA,T.NUMERO_DOCUMENTO,T.POSTULANTE,T.SERVICIO,T.MODALIDAD,\n"
+        String sql = "SELECT T.ID,T.ESTADO_DETALLE,T.ID_PEDIDO,T.ESTADO_PEDIDO,ifnull(T.PAQUETE,0) AS PAQUETE,T.EMPRESA,T.FECHA,T.NUMERO_DOCUMENTO,T.POSTULANTE,T.SERVICIO,T.MODALIDAD,\n"
                 + "T.USUARIO FROM(\n"
                 + "select dp.id_detalle_pedido AS ID,dp.id_estado as \"ESTADO_DETALLE\",p.id_pedido AS ID_PEDIDO,p.id_estado as \"ESTADO_PEDIDO\",dp.id_paquete_organizacion_solicitud as PAQUETE,\n"
                 + "o.razon_social as EMPRESA,dp.fecha_creacion AS FECHA,\n"
@@ -713,7 +713,7 @@ public class Detalle_PedidoDAO {
 
     public static ArrayList<detalle_pedido> Busqueda_DNI_2(String dni, String servicio) {
         ArrayList<detalle_pedido> list = new ArrayList<>();
-        String sql = "SELECT T.ID,T.ESTADO_DETALLE,T.ID_PEDIDO,T.ESTADO_PEDIDO,ifnull(T.PAQUETE,'') AS PAQUETE,T.EMPRESA,T.FECHA,T.NUMERO_DOCUMENTO,T.POSTULANTE,T.SERVICIO,T.MODALIDAD,\n"
+        String sql = "SELECT T.ID,T.ESTADO_DETALLE,T.ID_PEDIDO,T.ESTADO_PEDIDO,ifnull(T.PAQUETE,0) AS PAQUETE,T.EMPRESA,T.FECHA,T.NUMERO_DOCUMENTO,T.POSTULANTE,T.SERVICIO,T.MODALIDAD,\n"
                 + "T.USUARIO FROM(\n"
                 + "select dp.id_detalle_pedido AS ID,dp.id_estado as \"ESTADO_DETALLE\",p.id_pedido AS ID_PEDIDO,p.id_estado as \"ESTADO_PEDIDO\",dp.id_paquete_organizacion_solicitud as PAQUETE\n"
                 + ",o.razon_social as EMPRESA,dp.fecha_creacion AS FECHA,\n"
@@ -811,6 +811,7 @@ public class Detalle_PedidoDAO {
                 + "AND dp.id_estado=2)T";
         ResultSet rs = null;;
         detalle_pedido vo = new detalle_pedido();
+        
         try {
             PreparedStatement ps = conexion.Conexion().prepareStatement(sql);
             ps.setString(1, idPedido);
@@ -826,7 +827,9 @@ public class Detalle_PedidoDAO {
                     System.out.println("aqui se cambia de estado al detalle_pedido" + rs.getObject(1));
                     this.EliminarDetallePedido(idDetallePedido);
                 }
-                if (paquete != null ) {
+                if (paquete.equals("0")|| paquete.equals("")) {
+                    
+                }else{
                     // si hay numero de paquete se agrega 1 mas y se pone como aprobado
                     System.out.println("Aqui ses aumenta 1 al paquete" + paquete);
                     this.AumentarPaquete(paquete);
