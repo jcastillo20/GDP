@@ -30,6 +30,7 @@ public class FrmLogin extends javax.swing.JFrame {
         initComponents();
         setIconImage(new ImageIcon(getClass().getResource("/image/ipartner.png")).getImage());
         setLocationRelativeTo(null);
+        setResizable(false);
 
     }
 
@@ -49,10 +50,18 @@ public class FrmLogin extends javax.swing.JFrame {
         btnlog = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(318, 153));
+        setMinimumSize(new java.awt.Dimension(318, 153));
 
         jLabel1.setText("Usuario:");
 
         jLabel2.setText("Password:");
+
+        txtpwd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtpwdActionPerformed(evt);
+            }
+        });
 
         btnlog.setText("Login");
         btnlog.addActionListener(new java.awt.event.ActionListener() {
@@ -100,7 +109,17 @@ public class FrmLogin extends javax.swing.JFrame {
 
 
     private void btnlogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlogActionPerformed
-        String textoSinEncriptar = txtpwd.getText();
+       Ingresar();
+
+    }//GEN-LAST:event_btnlogActionPerformed
+
+    private void txtpwdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtpwdActionPerformed
+        // TODO add your handling code here:
+        Ingresar();
+    }//GEN-LAST:event_txtpwdActionPerformed
+
+    public void Ingresar(){
+         String textoSinEncriptar = txtpwd.getText();
         try {
             String password = DigestUtils.md5Hex(textoSinEncriptar);
             usuario ou = new usuario();
@@ -119,14 +138,13 @@ public class FrmLogin extends javax.swing.JFrame {
         } catch (Exception e) {
             Mensajes.msjMuestra(e.getMessage());
         }
-
-    }//GEN-LAST:event_btnlogActionPerformed
-
+    }
     public void obTener() {
 
         String datos_usuario = UsuarioDAO.BuscarID(USUARIO);
         String[] datos = datos_usuario.split(";");
         String id = datos[0];
+        Mensajes.GuardarIDUsuario(id);
         String nombres = datos[1];
         String empresa = datos[2];
         String cargo = datos[3];

@@ -116,6 +116,174 @@ public class MyEditor {
 
     }
 
+    public void VisualizarDataXDisponibles_ConPaquete(JTable tabla, String desde,String hasta) {
+        tabla.setDefaultRenderer(Object.class, new Render());
+        DefaultTableModel dt = new DefaultTableModel();
+        dt.addColumn("ID");
+        dt.addColumn("EMPRESA");
+        dt.addColumn("FECHA");
+        dt.addColumn("CONTRATADAS");
+        dt.addColumn("DISPONIBLES");
+        dt.addColumn("PRECIO");
+        dt.addColumn("ESTADO");
+        dt.addColumn("SERVICIO");
+        dt.addColumn("Accion");
+        JButton btn_info = new JButton("Informacion");
+        btn_info.setName("i");
+
+        daoOrganizacion = new OrganizacionDAO();
+        organizacion vo = new organizacion();
+
+        ArrayList<organizacion> list = daoOrganizacion.Listar_info_Botones_X_DISPONIBLES_ConPaquete(desde,hasta);
+
+        if (list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                Object fila[] = new Object[9];
+                vo = list.get(i);
+                fila[0] = vo.getId_estado();
+                fila[1] = vo.getRazon_social();
+                fila[2] = vo.getFecha_creacion();
+                fila[3] = vo.getId_organizacion();
+                fila[4] = vo.getId_usuario_actualiza();
+                fila[5] = vo.getResponsable_pago();
+                fila[6] = vo.getRuc();
+                fila[7] = vo.getTelefono1();
+                fila[8] = btn_info;
+                dt.addRow(fila);
+            }
+            tabla.setModel(dt);
+            tabla.setRowHeight(20);
+
+        }
+
+    }
+
+    
+    public void VisualizarDataXContratadas_ConPaquete(JTable tabla, String desde,String hasta) {
+        tabla.setDefaultRenderer(Object.class, new Render());
+        DefaultTableModel dt = new DefaultTableModel();
+        dt.addColumn("ID");
+        dt.addColumn("EMPRESA");
+        dt.addColumn("FECHA");
+        dt.addColumn("CONTRATADAS");
+        dt.addColumn("DISPONIBLES");
+        dt.addColumn("PRECIO");
+        dt.addColumn("ESTADO");
+        dt.addColumn("SERVICIO");
+        dt.addColumn("Accion");
+        JButton btn_info = new JButton("Informacion");
+        btn_info.setName("i");
+
+        daoOrganizacion = new OrganizacionDAO();
+        organizacion vo = new organizacion();
+
+        ArrayList<organizacion> list = daoOrganizacion.Listar_info_Botones_X_CONTRATADAS_ConPaquete(desde,hasta);
+
+        if (list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                Object fila[] = new Object[9];
+                vo = list.get(i);
+                fila[0] = vo.getId_estado();
+                fila[1] = vo.getRazon_social();
+                fila[2] = vo.getFecha_creacion();
+                fila[3] = vo.getId_organizacion();
+                fila[4] = vo.getId_usuario_actualiza();
+                fila[5] = vo.getResponsable_pago();
+                fila[6] = vo.getRuc();
+                fila[7] = vo.getTelefono1();
+                fila[8] = btn_info;
+                dt.addRow(fila);
+            }
+            tabla.setModel(dt);
+            tabla.setRowHeight(20);
+
+        }
+
+    }
+    public void VisualizarDataXEstado_ConPaquete(JTable tabla, String estado) {
+        tabla.setDefaultRenderer(Object.class, new Render());
+        DefaultTableModel dt = new DefaultTableModel();
+        dt.addColumn("ID");
+        dt.addColumn("EMPRESA");
+        dt.addColumn("FECHA");
+        dt.addColumn("CONTRATADAS");
+        dt.addColumn("DISPONIBLES");
+        dt.addColumn("PRECIO");
+        dt.addColumn("ESTADO");
+        dt.addColumn("SERVICIO");
+        dt.addColumn("Accion");
+        JButton btn_info = new JButton("Informacion");
+        btn_info.setName("i");
+
+        daoOrganizacion = new OrganizacionDAO();
+        organizacion vo = new organizacion();
+
+        ArrayList<organizacion> list = daoOrganizacion.Listar_info_Botones_X_ESTADO_ConPaquete(estado);
+
+        if (list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                Object fila[] = new Object[9];
+                vo = list.get(i);
+                fila[0] = vo.getId_estado();
+                fila[1] = vo.getRazon_social();
+                fila[2] = vo.getFecha_creacion();
+                fila[3] = vo.getId_organizacion();
+                fila[4] = vo.getId_usuario_actualiza();
+                fila[5] = vo.getResponsable_pago();
+                fila[6] = vo.getRuc();
+                fila[7] = vo.getTelefono1();
+                fila[8] = btn_info;
+                dt.addRow(fila);
+            }
+            tabla.setModel(dt);
+            tabla.setRowHeight(20);
+
+        }
+
+    }
+
+    public void VisualizarDataXServicio_ConPaquete(JTable tabla, String servicio) {
+        tabla.setDefaultRenderer(Object.class, new Render());
+        DefaultTableModel dt = new DefaultTableModel();
+        dt.addColumn("ID");
+        dt.addColumn("EMPRESA");
+        dt.addColumn("FECHA");
+        dt.addColumn("CONTRATADAS");
+        dt.addColumn("DISPONIBLES");
+        dt.addColumn("PRECIO");
+        dt.addColumn("ESTADO");
+        dt.addColumn("SERVICIO");
+        dt.addColumn("Accion");
+        JButton btn_info = new JButton("Informacion");
+        btn_info.setName("i");
+
+        daoOrganizacion = new OrganizacionDAO();
+        organizacion vo = new organizacion();
+
+        ArrayList<organizacion> list = daoOrganizacion.Listar_info_Botones_X_SERVICIO_ConPaquete(servicio);
+
+        if (list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                Object fila[] = new Object[9];
+                vo = list.get(i);
+                fila[0] = vo.getId_estado();
+                fila[1] = vo.getRazon_social();
+                fila[2] = vo.getFecha_creacion();
+                fila[3] = vo.getId_organizacion();
+                fila[4] = vo.getId_usuario_actualiza();
+                fila[5] = vo.getResponsable_pago();
+                fila[6] = vo.getRuc();
+                fila[7] = vo.getTelefono1();
+                fila[8] = btn_info;
+                dt.addRow(fila);
+            }
+            tabla.setModel(dt);
+            tabla.setRowHeight(20);
+
+        }
+
+    }
+    
     public void VisualizarData_SinPaquete(JTable tabla) {
         tabla.setDefaultRenderer(Object.class, new Render2());
         DefaultTableModel dt = new DefaultTableModel();
@@ -296,6 +464,7 @@ public class MyEditor {
         ImageIcon icono_actualizar = new ImageIcon(getClass().getResource("/image/update.png"));
         JButton btn_actualizar = new JButton();
         btn_actualizar.setIcon(icono_actualizar);
+        btn_actualizar.setName("btnactualizar");
         btn_actualizar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btn_actualizar.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
         btn_actualizar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -304,10 +473,11 @@ public class MyEditor {
         ImageIcon icono_eliminar = new ImageIcon(getClass().getResource("/image/delete.png"));
         JButton btn_eliminar = new JButton();
         btn_eliminar.setIcon(icono_eliminar);
-        btn_actualizar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btn_actualizar.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
-        btn_actualizar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        btn_actualizar.setVerticalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_eliminar.setName("btneliminar");
+        btn_eliminar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btn_eliminar.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
+        btn_eliminar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btn_eliminar.setVerticalTextPosition(javax.swing.SwingConstants.CENTER);
 
         daoDetallePedido = new Detalle_PedidoDAO();
         detalle_pedido vo = new detalle_pedido();

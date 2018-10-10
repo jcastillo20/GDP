@@ -92,6 +92,7 @@ public class IFrmValidarDNI extends javax.swing.JInternalFrame {
         pbarProcesando = new javax.swing.JProgressBar();
 
         setClosable(true);
+        setIconifiable(true);
         setTitle("Filtro RENIEC");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N

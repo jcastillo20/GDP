@@ -11,6 +11,7 @@ import com.pe.vista.*;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
@@ -21,6 +22,7 @@ import javax.swing.JTextField;
 public class Mensajes {
     public static String plomo="#818181";
     public static String negro="#000000";
+    public static String idUsuario;
     
     public static void msjMuestra(String contenido){
         JOptionPane.showMessageDialog(null, contenido);
@@ -44,6 +46,13 @@ public class Mensajes {
         }
     }
     
+    public static void GuardarIDUsuario(String ID){
+        idUsuario=ID;
+    }
+    
+     public static String ObtenerIDUsuario(){
+        return idUsuario;
+    }
     public static void msjconfirmacionActualizarPedido(String fecha,String idDetallePedido,String idPedido){
         Detalle_PedidoDAO dao=new Detalle_PedidoDAO();
         String title="Actualizar el envio";

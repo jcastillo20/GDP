@@ -50,9 +50,9 @@ public class IFrmVistaPaquetes extends javax.swing.JInternalFrame {
     public IFrmVistaPaquetes() {
         initComponents();
         HabilitarBusqueda();
-        
+        //Cargar_Combo_Dependente();
+        txtbusqueda.setVisible(false);
         Mensajes.centerComponent(this);
-
     }
 
     /**
@@ -80,8 +80,11 @@ public class IFrmVistaPaquetes extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         rbtnConPaquete = new javax.swing.JRadioButton();
         rbtnSinPaquete = new javax.swing.JRadioButton();
+        cboFiltroPaquete = new javax.swing.JComboBox<>();
+        cboRango = new javax.swing.JComboBox<>();
 
         setClosable(true);
+        setIconifiable(true);
         setTitle("INFO - PAQUETES");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
@@ -162,6 +165,19 @@ public class IFrmVistaPaquetes extends javax.swing.JInternalFrame {
             }
         });
 
+        cboFiltroPaquete.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "EMPRESA", "DISPONIBLES", "CONTRATADAS", "ESTADO", "SERVICIO" }));
+        cboFiltroPaquete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboFiltroPaqueteActionPerformed(evt);
+            }
+        });
+
+        cboRango.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboRangoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -191,7 +207,13 @@ public class IFrmVistaPaquetes extends javax.swing.JInternalFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblBusqueda)
                                 .addGap(18, 18, 18)
-                                .addComponent(txtbusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtbusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(cboFiltroPaquete, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(cboRango, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -213,10 +235,13 @@ public class IFrmVistaPaquetes extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblBusqueda)
-                    .addComponent(txtbusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(cboFiltroPaquete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cboRango, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addComponent(txtbusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -231,14 +256,20 @@ public class IFrmVistaPaquetes extends javax.swing.JInternalFrame {
             lblBusqueda.setVisible(true);
             txtbusqueda.setVisible(true);
             btnActualizar.setVisible(true);
+            cboFiltroPaquete.setVisible(true);
+            Cargar_Combo_Dependente();
         } else if (rbtnSinPaquete.isSelected() == true) {
             lblBusqueda.setVisible(true);
             txtbusqueda.setVisible(true);
             btnActualizar.setVisible(true);
+            cboFiltroPaquete.setVisible(false);
+            cboRango.setVisible(false);
         } else {
             lblBusqueda.setVisible(false);
             txtbusqueda.setVisible(false);
             btnActualizar.setVisible(false);
+            cboFiltroPaquete.setVisible(false);
+            cboRango.setVisible(false);
         }
     }
 
@@ -249,7 +280,9 @@ public class IFrmVistaPaquetes extends javax.swing.JInternalFrame {
 
     private void txtbusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtbusquedaActionPerformed
         if (rbtnConPaquete.isSelected() == true) {
-            visualizar_XEmpresa_ConPaquete();
+            if (cboFiltroPaquete.getSelectedIndex() == 0) {
+                visualizar_XEmpresa_ConPaquete();
+            }
         } else {
             visualizar_XEmpresa_SinPaquete();
         }
@@ -318,6 +351,24 @@ public class IFrmVistaPaquetes extends javax.swing.JInternalFrame {
         HabilitarBusqueda();
     }//GEN-LAST:event_rbtnSinPaqueteActionPerformed
 
+    private void cboFiltroPaqueteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboFiltroPaqueteActionPerformed
+        // TODO add your handling code here:
+        this.Cargar_Combo_Dependente();
+    }//GEN-LAST:event_cboFiltroPaqueteActionPerformed
+
+    private void cboRangoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboRangoActionPerformed
+        // TODO add your handling code here:
+        if (cboFiltroPaquete.getSelectedIndex() == 1) {
+            visualizar_XDisponibles_ConPaquete();
+        } else if (cboFiltroPaquete.getSelectedIndex() == 2) {
+            visualizar_XContratadas_ConPaquete();
+        }else if (cboFiltroPaquete.getSelectedIndex() == 3) {
+            visualizar_XEstado_ConPaquete();
+        } else if (cboFiltroPaquete.getSelectedIndex() == 4) {
+            visualizar_XServicio_ConPaquete();
+        }
+    }//GEN-LAST:event_cboRangoActionPerformed
+
     private void ObtenerID() {
         if (rbtnConPaquete.isSelected() == true) {
             JFrame f = (JFrame) JOptionPane.getFrameForComponent(this);
@@ -325,7 +376,7 @@ public class IFrmVistaPaquetes extends javax.swing.JInternalFrame {
             int filaseleccionada = tblInfoPaquetes.getSelectedRow();
             String id = (String) tblInfoPaquetes.getValueAt(filaseleccionada, 0);
             String empresa = (String) tblInfoPaquetes.getValueAt(filaseleccionada, 1);
-            String servicio=(String)tblInfoPaquetes.getValueAt(filaseleccionada,7);
+            String servicio = (String) tblInfoPaquetes.getValueAt(filaseleccionada, 7);
             System.out.println(id + "mando el id");
             detalle.Recibedatos(id, empresa, servicio);
             detalle.show();
@@ -342,8 +393,6 @@ public class IFrmVistaPaquetes extends javax.swing.JInternalFrame {
         }
     }
 
-  
-
     private void Actualizar() {
         if (rbtnConPaquete.isSelected() == true) {
             visualizar_Paquetes();
@@ -354,9 +403,10 @@ public class IFrmVistaPaquetes extends javax.swing.JInternalFrame {
     }
 
     private void Formato_conPaquete() {
-        tblInfoPaquetes.getColumnModel().getColumn(0).setPreferredWidth(0);
         tblInfoPaquetes.getColumnModel().getColumn(0).setMaxWidth(0);
-        tblInfoPaquetes.getColumnModel().getColumn(0).setMinWidth(-0);
+        tblInfoPaquetes.getColumnModel().getColumn(0).setMinWidth(0);
+        tblInfoPaquetes.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(0);
+        tblInfoPaquetes.getTableHeader().getColumnModel().getColumn(0).setMinWidth(0);
         tblInfoPaquetes.getColumnModel().getColumn(1).setPreferredWidth(250);
         tblInfoPaquetes.getColumnModel().getColumn(2).setPreferredWidth(95);
         tblInfoPaquetes.getColumnModel().getColumn(3).setPreferredWidth(110);
@@ -371,14 +421,14 @@ public class IFrmVistaPaquetes extends javax.swing.JInternalFrame {
         tblInfoPaquetes.setIntercellSpacing(new Dimension(1, 1));
         tblInfoPaquetes.setRowMargin(1);
         tblInfoPaquetes.setOpaque(false);
-        
 
     }
 
     private void Formato_SinPaquete() {
-        tblInfoPaquetes.getColumnModel().getColumn(0).setPreferredWidth(0);
         tblInfoPaquetes.getColumnModel().getColumn(0).setMaxWidth(0);
         tblInfoPaquetes.getColumnModel().getColumn(0).setMinWidth(0);
+        tblInfoPaquetes.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(0);
+        tblInfoPaquetes.getTableHeader().getColumnModel().getColumn(0).setMinWidth(0);
         tblInfoPaquetes.getColumnModel().getColumn(1).setPreferredWidth(200);
         tblInfoPaquetes.getColumnModel().getColumn(2).setPreferredWidth(310);
         tblInfoPaquetes.getColumnModel().getColumn(3).setPreferredWidth(300);
@@ -394,7 +444,6 @@ public class IFrmVistaPaquetes extends javax.swing.JInternalFrame {
 
         myEdit.VisualizarData_ConPaquete(tblInfoPaquetes);
         Formato_conPaquete();
-        
 
     }
 
@@ -411,16 +460,174 @@ public class IFrmVistaPaquetes extends javax.swing.JInternalFrame {
         Formato_conPaquete();
     }
 
+    private void visualizar_XDisponibles_ConPaquete() {
+        String desde = null;
+        String hasta = null;
+        if (cboRango.getSelectedIndex() == 0) {
+            desde = "1";
+            hasta = "20";
+            myEdit.VisualizarDataXDisponibles_ConPaquete(tblInfoPaquetes, desde, hasta);
+            Formato_conPaquete();
+        } else if (cboRango.getSelectedIndex() == 1) {
+            desde = "21";
+            hasta = "40";
+            myEdit.VisualizarDataXDisponibles_ConPaquete(tblInfoPaquetes, desde, hasta);
+            Formato_conPaquete();
+        } else if (cboRango.getSelectedIndex() == 2) {
+            desde = "41";
+            hasta = "60";
+            myEdit.VisualizarDataXDisponibles_ConPaquete(tblInfoPaquetes, desde, hasta);
+            Formato_conPaquete();
+        } else if (cboRango.getSelectedIndex() == 3) {
+            desde = "61";
+            hasta = "100";
+            myEdit.VisualizarDataXDisponibles_ConPaquete(tblInfoPaquetes, desde, hasta);
+            Formato_conPaquete();
+        } else if (cboRango.getSelectedIndex() == 4) {
+            desde = "101";
+            hasta = "150";
+            myEdit.VisualizarDataXDisponibles_ConPaquete(tblInfoPaquetes, desde, hasta);
+            Formato_conPaquete();
+        } else if (cboRango.getSelectedIndex() == 5) {
+            desde = "151";
+            hasta = "200";
+            myEdit.VisualizarDataXDisponibles_ConPaquete(tblInfoPaquetes, desde, hasta);
+            Formato_conPaquete();
+        }
+    }
+    private void visualizar_XContratadas_ConPaquete() {
+        String desde = null;
+        String hasta = null;
+        if (cboRango.getSelectedIndex() == 0) {
+            desde = "0";
+            hasta = "50";
+            myEdit.VisualizarDataXContratadas_ConPaquete(tblInfoPaquetes, desde, hasta);
+            Formato_conPaquete();
+        } else if (cboRango.getSelectedIndex() == 1) {
+            desde = "51";
+            hasta = "100";
+            myEdit.VisualizarDataXContratadas_ConPaquete(tblInfoPaquetes, desde, hasta);
+            Formato_conPaquete();
+        } else if (cboRango.getSelectedIndex() == 2) {
+            desde = "101";
+            hasta = "200";
+            myEdit.VisualizarDataXContratadas_ConPaquete(tblInfoPaquetes, desde, hasta);
+            Formato_conPaquete();
+        } else if (cboRango.getSelectedIndex() == 3) {
+            desde = "201";
+            hasta = "300";
+            myEdit.VisualizarDataXContratadas_ConPaquete(tblInfoPaquetes, desde, hasta);
+            Formato_conPaquete();
+        } else if (cboRango.getSelectedIndex() == 4) {
+            desde = "301";
+            hasta = "400";
+            myEdit.VisualizarDataXContratadas_ConPaquete(tblInfoPaquetes, desde, hasta);
+            Formato_conPaquete();
+        } else if (cboRango.getSelectedIndex() == 5) {
+            desde = "401";
+            hasta = "500";
+            myEdit.VisualizarDataXContratadas_ConPaquete(tblInfoPaquetes, desde, hasta);
+            Formato_conPaquete();
+        }else if (cboRango.getSelectedIndex() == 6) {
+            desde = "501";
+            hasta = "1000";
+            myEdit.VisualizarDataXContratadas_ConPaquete(tblInfoPaquetes, desde, hasta);
+            Formato_conPaquete();
+        } else if (cboRango.getSelectedIndex() == 7) {
+            desde = "1001";
+            hasta = "2000";
+            myEdit.VisualizarDataXContratadas_ConPaquete(tblInfoPaquetes, desde, hasta);
+            Formato_conPaquete();
+        } else if (cboRango.getSelectedIndex() == 8) {
+            desde = "2001";
+            hasta = "5000";
+            myEdit.VisualizarDataXContratadas_ConPaquete(tblInfoPaquetes, desde, hasta);
+            Formato_conPaquete();
+        }
+    }
+
+    private void visualizar_XEstado_ConPaquete() {
+        String estado = null;
+        if (cboRango.getSelectedItem() == null) {
+
+        } else {
+            estado = cboRango.getSelectedItem().toString().trim();
+            System.out.println(estado);
+            myEdit.VisualizarDataXEstado_ConPaquete(tblInfoPaquetes, estado);
+            Formato_conPaquete();
+        }
+
+    }
+
+    private void visualizar_XServicio_ConPaquete() {
+        String servicio = null;
+        if (cboRango.getSelectedItem() == null) {
+
+        } else {
+            servicio = cboRango.getSelectedItem().toString().trim();
+            myEdit.VisualizarDataXServicio_ConPaquete(tblInfoPaquetes, servicio);
+            Formato_conPaquete();
+        }
+
+    }
+
     private void visualizar_XEmpresa_SinPaquete() {
         String empresa = txtbusqueda.getText().trim().toString();
         myEdit.VisualizarDataXEmpresa_SinPaquete(tblInfoPaquetes, empresa);
         Formato_SinPaquete();
     }
 
+    private void Cargar_Combo_Dependente() {
+        if (cboFiltroPaquete.getSelectedIndex() == 0) {
+            cboRango.setVisible(false);
+            txtbusqueda.setVisible(true);
+            visualizar_XEmpresa_ConPaquete();
+        } else if (cboFiltroPaquete.getSelectedIndex() == 1) {
+            cboRango.removeAllItems();
+            cboRango.setVisible(true);
+            cboRango.addItem("1 - 20");
+            cboRango.addItem("21 - 40");
+            cboRango.addItem("41 - 60");
+            cboRango.addItem("61 - 100");
+            cboRango.addItem("101 - 150");
+            cboRango.addItem("151 - 200");
+            txtbusqueda.setVisible(false);
+        }else if (cboFiltroPaquete.getSelectedIndex() == 2) {
+            cboRango.removeAllItems();
+            cboRango.setVisible(true);
+            cboRango.addItem("0 - 50");
+            cboRango.addItem("51 - 100");
+            cboRango.addItem("101 - 200");
+            cboRango.addItem("201 - 300");
+            cboRango.addItem("301 - 400");
+            cboRango.addItem("401 - 500");
+            cboRango.addItem("501 - 1000");
+            cboRango.addItem("1001 - 2000");
+            cboRango.addItem("2001 - 5000");
+            txtbusqueda.setVisible(false);
+        } else if (cboFiltroPaquete.getSelectedIndex() == 3) {
+            cboRango.removeAllItems();
+            cboRango.setVisible(true);
+            cboRango.addItem("Aprobado");
+            cboRango.addItem("Caducado");
+            txtbusqueda.setVisible(false);
+        } else if (cboFiltroPaquete.getSelectedIndex() == 4) {
+            cboRango.removeAllItems();
+            cboRango.setVisible(true);
+            cboRango.addItem("Riesgos");
+            cboRango.addItem("Laboral");
+            cboRango.addItem("Domiciliarias");
+            cboRango.addItem("Sin Paquete");
+            txtbusqueda.setVisible(false);
+        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup Parametros;
     private javax.swing.JButton btnActualizar;
+    private javax.swing.JComboBox<String> cboFiltroPaquete;
+    private javax.swing.JComboBox<String> cboRango;
     private com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLayeredPane jLayeredPane1;

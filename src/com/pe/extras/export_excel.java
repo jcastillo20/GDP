@@ -123,6 +123,44 @@ public class export_excel {
         return false;
     }
 
+    public boolean export_ReportePedido(String detalle) {
+        try {
+            DataOutputStream out = new DataOutputStream(new FileOutputStream(archi));
+            WritableWorkbook w = Workbook.createWorkbook(out);
+
+            sheet = w.createSheet(detalle, 0);
+            sheet.getSettings().setZoomFactor(70);
+            Hoja_ReportePedidos();
+
+            for (int index = 0; index < tabla.size(); index++) {
+                JTable table = tabla.get(index);
+
+                WritableSheet s = w.getSheet(0);
+
+                for (int i = 0; i < table.getColumnCount(); i++) {
+                    for (int j = 0; j < table.getRowCount(); j++) {
+                        Object objeto = table.getValueAt(j, i);
+
+                        createColumna(s, table.getColumnName(i), i);//crea la columna
+                        createFilas(s, i, j + 1, String.valueOf(objeto));//crea las filas
+
+                    }
+                }
+            }
+            w.write();
+            w.close();
+
+            out.close();
+            return true;
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (WriteException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
     public boolean exportBusquedaDNI() {
         try {
             DataOutputStream out = new DataOutputStream(new FileOutputStream(archi));
@@ -146,7 +184,7 @@ public class export_excel {
 
                     }
                 }
-           
+
             }
             w.write();
             w.close();
@@ -232,6 +270,17 @@ public class export_excel {
         Label label;
         label = new Label(column, row, s, format);
         sheet.addCell(label);
+    }
+
+    private void Hoja_ReportePedidos() {
+        sheet.setColumnView(0, 42);
+        sheet.setColumnView(1, 24);
+        sheet.setColumnView(2, 28);
+        sheet.setColumnView(3, 59);
+        sheet.setColumnView(4, 47);
+        sheet.setColumnView(5, 30);
+        sheet.setColumnView(6, 40);
+
     }
 
     private void PrimeraHoja() {

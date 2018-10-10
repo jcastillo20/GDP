@@ -7,7 +7,8 @@ package com.pe.controlador;
 
 import com.pe.extras.Mensajes;
 import com.pe.modelo.usuario;
-import com.pe.util.conexion;
+import com.pe.util.*;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -20,7 +21,7 @@ import javax.swing.JComboBox;
  * @author JuanCR
  */
 public class UsuarioDAO {
-
+    
     public static int inLogin(usuario ou) {
         int valor = 0;
         try {
@@ -75,6 +76,11 @@ public class UsuarioDAO {
             }
         } catch (Exception e) {
 
+        } finally {
+            try {
+                conexion.CerrarBD(conexion.Conexion());
+            } catch (Exception ex) {
+            }
         }
         return lst;
     }
@@ -97,23 +103,18 @@ public class UsuarioDAO {
         }
         return rs;
     }
-    
-    
+
     public static ResultSet getxUsuario(String usuario) {
         usuario u = new usuario();
         ResultSet rs = null;
         try {
-//            String consulta = "select usu.id_usuario AS ID,usu.numero_documento AS DNI,usu.nombres ,usu.apellido_paterno AS EMPRESA,\n"
-//                    + "usu.apellido_materno AS CARGO,dc.descripcion_corta AS SEXO,IFNULL(usu.fecha_nacimiento,'') AS 'F. NACIMIENTO',\n"
-//                    + "usu.username ,usu.email ,usu.telefono_fijo ,usu.telefono_celular,usu.id_tipo_documento,usu.id_tipo_genero,\n"
-//                    + "usu.flag_cambio_password,usu.id_tipo_usuario,usu.codigo_color,usu.es_moderador_chat,up.id_perfil,up.id_estado  from usuario usu inner join detalle_catalogo dc\n"
-//                    + "inner join usuario_perfil up where usu.id_estado='1' AND up.id_usuario=usu.id_usuario AND dc.id_catalogo='3' AND usu.id_tipo_genero=dc.codigo AND usu.username LIKE ?";
- String consulta = "select dp.numero_documento as DNI ,CONCAT(dp.apellido_paterno,\" \",dp.apellido_materno,\" \",dp.nombres) as NOMBRES,dc.descripcion_larga AS SERVICIO,\n" +
-"dc2.descripcion_larga AS LOCALIDAD,dp.centro_costo AS 'CENTRO DE COSTO',dp.fecha_creacion AS FECHA ,u.nombres AS 'USUARIO',dp.costo_servicio\n" +
-"AS IMPORTE,dp.flag_antecedentes as ANTECEDENTES from detalle_pedido dp inner join detalle_catalogo dc inner join usuario u inner join detalle_catalogo dc2\n" +
-"where dc.id_catalogo=6 and dc.codigo=dp.id_tipo_servicio AND dc2.id_catalogo=8 and dc2.codigo=dp.id_localidad  and u.id_usuario=dp.id_usuario_crea\n" +
-"and dp.id_paquete_organizacion_solicitud=126";
+            String consulta = "select usu.id_usuario AS ID,usu.numero_documento AS DNI,usu.nombres ,usu.apellido_paterno AS EMPRESA,\n"
+                    + "usu.apellido_materno AS CARGO,dc.descripcion_corta AS SEXO,IFNULL(usu.fecha_nacimiento,'') AS 'F. NACIMIENTO',\n"
+                    + "usu.username ,usu.email ,usu.telefono_fijo ,usu.telefono_celular,usu.id_tipo_documento,usu.id_tipo_genero,\n"
+                    + "usu.flag_cambio_password,usu.id_tipo_usuario,usu.codigo_color,usu.es_moderador_chat,up.id_perfil,up.id_estado  from usuario usu inner join detalle_catalogo dc\n"
+                    + "inner join usuario_perfil up where usu.id_estado='1' AND up.id_usuario=usu.id_usuario AND dc.id_catalogo='3' AND usu.id_tipo_genero=dc.codigo AND usu.username LIKE ?";
             PreparedStatement pst = conexion.Conexion().prepareStatement(consulta);
+            pst.setString(1, "%" + usuario + "%");
             rs = pst.executeQuery();
             conexion.CerrarBD(conexion.Conexion());
         } catch (Exception e) {

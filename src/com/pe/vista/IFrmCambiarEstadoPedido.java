@@ -13,6 +13,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import net.proteanit.sql.DbUtils;
@@ -188,8 +190,8 @@ public class IFrmCambiarEstadoPedido extends javax.swing.JInternalFrame {
         int row = evt.getY() / tblDatos.getRowHeight();
         String idDetallePedido = "" + tblDatos.getValueAt(filaseleccionada, 0);
         String idPedido = "" + tblDatos.getValueAt(filaseleccionada, 2);
-        String fecha=""+tblDatos.getValueAt(filaseleccionada, 6);
-        String paquete=""+tblDatos.getValueAt(filaseleccionada, 4);
+        String fecha = "" + tblDatos.getValueAt(filaseleccionada, 6);
+        String paquete = "" + tblDatos.getValueAt(filaseleccionada, 4);
         Object value = tblDatos.getValueAt(row, columna);
         if (value instanceof JButton) {
             ((JButton) value).doClick();
@@ -198,10 +200,18 @@ public class IFrmCambiarEstadoPedido extends javax.swing.JInternalFrame {
             if (boton.getName().equals("btnactualizar")) {
                 System.out.println("Click en el boton actualizar");
                 Mensajes.msjconfirmacionActualizarPedido(fecha, idDetallePedido, idPedido);
+                JFrame f = (JFrame) JOptionPane.getFrameForComponent(this);
+                FrmDialogCambiarEstado detalle = new FrmDialogCambiarEstado(f, true);
+                detalle.idDetallePedido = idDetallePedido;
+                detalle.show();
             }
-             if (boton.getName().equals("btneliminar")) {
+            if (boton.getName().equals("btneliminar")) {
                 System.out.println("Click en el boton Eliminar");
-                Mensajes.msjconfirmacionEliminarPedido(fecha, idDetallePedido, idPedido,paquete);
+                Mensajes.msjconfirmacionEliminarPedido(fecha, idDetallePedido, idPedido, paquete);
+                JFrame f = (JFrame) JOptionPane.getFrameForComponent(this);
+                FrmDialogCambiarEstado detalle = new FrmDialogCambiarEstado(f, true);
+                detalle.idDetallePedido = idDetallePedido;
+                detalle.show();
             }
         }
 

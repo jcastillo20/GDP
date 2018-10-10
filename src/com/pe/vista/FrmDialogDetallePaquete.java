@@ -85,13 +85,15 @@ public class FrmDialogDetallePaquete extends javax.swing.JDialog {
         Servicio = servicio.trim();
         if (Servicio.matches("(.*)Riesgos(.*)")) {
             ListarDetallePaqueteRiesgos();
+            ListarDetalleConsolidadoRiesgos();
+            ListarUsuarioPaqueteRiesgos();
             lblNombreEmpresa.setText(Empresa);
             lblServicio.setText(Servicio);
         } else if (Servicio.matches("(.*)Laboral(.*)")) {
             ListarDetallePaqueteLaboral();
             lblNombreEmpresa.setText(Empresa);
             lblServicio.setText(Servicio);
-        }else{
+        } else {
             ListarDetallePaqueteOtrosServicios();
             lblNombreEmpresa.setText(Empresa);
             lblServicio.setText(Servicio);
@@ -103,8 +105,7 @@ public class FrmDialogDetallePaquete extends javax.swing.JDialog {
         try {
             tblDetalle_pedido.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.ConsolidadoxEmpresa_Riesgos(idPaquete)));
             FormatoDetallepaqueteRiesgos();
-            ListarDetalleConsolidadoRiesgos();
-            ListarUsuarioPaqueteRiesgos();
+
         } catch (Exception e) {
         }
     }
@@ -168,8 +169,8 @@ public class FrmDialogDetallePaquete extends javax.swing.JDialog {
         } catch (Exception e) {
         }
     }
-    
-        private void ListarDetallePaqueteOtrosServicios() {
+
+    private void ListarDetallePaqueteOtrosServicios() {
         try {
             tblDetalle_pedido.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.ConsolidadoxEmpresa_Otros_Servicios(idPaquete)));
             FormatoDetallepaqueteLaboral();
@@ -287,38 +288,38 @@ public class FrmDialogDetallePaquete extends javax.swing.JDialog {
         tblUsuarios.setOpaque(false);
     }
 
-    public void RecibeDatosSinPaquete(String id, String empresa, String desde, String hasta,String servicio) {
+    public void RecibeDatosSinPaquete(String id, String empresa, String desde, String hasta, String servicio) {
         Empresa = empresa;
         idEmpresa = id;
         Desde = desde;
         Hasta = hasta;
         lblNombreEmpresa.setText(Empresa);
-        Servicio=servicio;
-        if(Servicio=="RR"){
+        Servicio = servicio;
+        if (Servicio == "RR") {
             lblServicio.setText("Riesgos");
             ListarDetalleSinPaqueteRiesgos();
-        }else if(Servicio=="RL"){
+        } else if (Servicio == "RL") {
             lblServicio.setText("Laboral");
             ListarDetalleSinPaqueteLaboral();
-        }else if(Servicio=="VD"){
+        } else if (Servicio == "VD") {
             lblServicio.setText("Domiciliaria");
             ListarDetalleSinPaqueteOtrosServicios();
-        }else if(Servicio=="VP"){
+        } else if (Servicio == "VP") {
             lblServicio.setText("Proveedor");
             ListarDetalleSinPaqueteOtrosServicios();
-        }else if(Servicio=="VA"){
+        } else if (Servicio == "VA") {
             lblServicio.setText("Academicas");
             ListarDetalleSinPaqueteOtrosServicios();
-        }else if(Servicio=="CT"){
+        } else if (Servicio == "CT") {
             lblServicio.setText("Academicas");
             ListarDetalleSinPaqueteOtrosServicios();
         }
-       
+
     }
 
     private void ListarDetalleSinPaqueteRiesgos() {
         try {
-            tblDetalle_pedido.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.ConsolidadoxEmpresa_SinPaquete_Riesgos(idEmpresa, Desde, Hasta,Servicio)));
+            tblDetalle_pedido.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.ConsolidadoxEmpresa_SinPaquete_Riesgos(idEmpresa, Desde, Hasta, Servicio)));
             FormatoDetallepaqueteRiesgos();;
             int cantidad = tblDetalle_pedido.getRowCount();
             txtTotalReportesSolicitados.setText("" + cantidad);
@@ -330,7 +331,7 @@ public class FrmDialogDetallePaquete extends javax.swing.JDialog {
 
     private void ListarDetalleConsolidadoSinPaqueteRiesgos() {
         try {
-            tblDetalleConsolidado.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.DetalleConsolidado_SinPaquete_Riesgos(idEmpresa, Desde, Hasta,Servicio)));
+            tblDetalleConsolidado.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.DetalleConsolidado_SinPaquete_Riesgos(idEmpresa, Desde, Hasta, Servicio)));
             FormatoDetalleconsolidadoRiesgos();
             if (tblDetalleConsolidado.getRowCount() > 0) {
                 txtTotalReportesSolicitados.setText("" + tblDetalleConsolidado.getValueAt(0, 5));
@@ -348,18 +349,17 @@ public class FrmDialogDetallePaquete extends javax.swing.JDialog {
     private void ListarUsuarioSinPaqueteRiesgos() {
         try {
             System.out.println("paso hasta aqui Listar Usuario");
-            tblUsuarios.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.Detalle_Usuario_SinPaquete_Riesgos(idEmpresa, Desde, Hasta,Servicio)));
+            tblUsuarios.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.Detalle_Usuario_SinPaquete_Riesgos(idEmpresa, Desde, Hasta, Servicio)));
             System.out.println("Ya paso el Lsitado");
             FormatoUsuarioRiesgos();
 
         } catch (Exception e) {
         }
     }
-   
-    
+
     private void ListarDetalleSinPaqueteLaboral() {
         try {
-            tblDetalle_pedido.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.ConsolidadoxEmpresa_SinPaquete_Laboral(idEmpresa, Desde, Hasta,Servicio)));
+            tblDetalle_pedido.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.ConsolidadoxEmpresa_SinPaquete_Laboral(idEmpresa, Desde, Hasta, Servicio)));
             FormatoDetallepaqueteRiesgos();;
             int cantidad = tblDetalle_pedido.getRowCount();
             txtTotalReportesSolicitados.setText("" + cantidad);
@@ -371,7 +371,7 @@ public class FrmDialogDetallePaquete extends javax.swing.JDialog {
 
     private void ListarDetalleConsolidadoSinPaqueteLaboral() {
         try {
-            tblDetalleConsolidado.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.DetalleConsolidado_SinPaquete_Laboral(idEmpresa, Desde, Hasta,Servicio)));
+            tblDetalleConsolidado.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.DetalleConsolidado_SinPaquete_Laboral(idEmpresa, Desde, Hasta, Servicio)));
             FormatoDetalleconsolidadoRiesgos();
             if (tblDetalleConsolidado.getRowCount() > 0) {
                 txtTotalReportesSolicitados.setText("" + tblDetalleConsolidado.getValueAt(0, 5));
@@ -389,18 +389,17 @@ public class FrmDialogDetallePaquete extends javax.swing.JDialog {
     private void ListarUsuarioSinPaqueteLaboral() {
         try {
             System.out.println("paso hasta aqui Listar Usuario");
-            tblUsuarios.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.Detalle_Usuario_SinPaquete_Laboral(idEmpresa, Desde, Hasta,Servicio)));
+            tblUsuarios.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.Detalle_Usuario_SinPaquete_Laboral(idEmpresa, Desde, Hasta, Servicio)));
             System.out.println("Ya paso el Lsitado");
             FormatoUsuarioRiesgos();
 
         } catch (Exception e) {
         }
     }
-   
 
     private void ListarDetalleSinPaqueteOtrosServicios() {
         try {
-            tblDetalle_pedido.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.ConsolidadoxEmpresa_SinPaquete_Otros_Servicios(idEmpresa, Desde, Hasta,Servicio)));
+            tblDetalle_pedido.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.ConsolidadoxEmpresa_SinPaquete_Otros_Servicios(idEmpresa, Desde, Hasta, Servicio)));
             FormatoDetallepaqueteRiesgos();;
             int cantidad = tblDetalle_pedido.getRowCount();
             txtTotalReportesSolicitados.setText("" + cantidad);
@@ -412,7 +411,7 @@ public class FrmDialogDetallePaquete extends javax.swing.JDialog {
 
     private void ListarDetalleConsolidadoSinPaqueteOtrosServicios() {
         try {
-            tblDetalleConsolidado.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.DetalleConsolidado_SinPaquete_Otros_Servicios(idEmpresa, Desde, Hasta,Servicio)));
+            tblDetalleConsolidado.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.DetalleConsolidado_SinPaquete_Otros_Servicios(idEmpresa, Desde, Hasta, Servicio)));
             FormatoDetalleconsolidadoLaboral();
             if (tblDetalleConsolidado.getRowCount() > 0) {
                 txtTotalReportesSolicitados.setText("" + tblDetalleConsolidado.getValueAt(0, 5));
@@ -429,11 +428,12 @@ public class FrmDialogDetallePaquete extends javax.swing.JDialog {
 
     private void ListarUsuarioSinPaqueteOtrosServicios() {
         try {
-            tblUsuarios.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.Detalle_Usuario_SinPaquete_Otros_Servicios(idEmpresa, Desde, Hasta,Servicio)));
-           
+            tblUsuarios.setModel(DbUtils.resultSetToTableModel(Detalle_PedidoDAO.Detalle_Usuario_SinPaquete_Otros_Servicios(idEmpresa, Desde, Hasta, Servicio)));
+
         } catch (Exception e) {
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
